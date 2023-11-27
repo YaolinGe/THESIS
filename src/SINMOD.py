@@ -11,7 +11,7 @@ Methodology:
     3. For a given set of coordinates, find the nearest SINMOD grid point.
     4. Interpolate the data using the nearest SINMOD grid point.
 """
-from WGS import WGS
+from src.WGS import WGS
 from pykdtree.kdtree import KDTree
 import xarray as xr
 import re
