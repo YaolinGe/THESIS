@@ -91,13 +91,14 @@ def make_plots(mu, cov, filename: str = None, loc: np.ndarray = None):
 #%% plot the realizations of the ground truth
 # fig = plt.figure(figsize=(18, 5))
 # gs = GridSpec(nrows=1, ncols=3)
-seeds = [0]
-# names = ["I", "II", "III"]
+seeds = [0, 1, 2]
+names = ["I", "II", "III"]
 for seed in seeds:
     np.random.seed(seed)
     mu_truth = mu + np.dot(L, np.random.normal(size=mu.shape[0]))
     # ax = fig.add_subplot(gs[seed])
-    # plotf(grid, mu_truth, "BrBG", "Realization " + names[seed], vmin=0, vmax=1)
+    plotf(grid, mu_truth, "BrBG", "Realization " + names[seed], vmin=0, vmax=1)
+    plt.show()
 
 # plt.tight_layout()
 # plt.savefig(figpath + "gp_realizations.png")

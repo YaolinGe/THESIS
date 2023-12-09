@@ -22,10 +22,19 @@ class Config:
     """ Config contains essential setup for the simulation study. """
     def __init__(self) -> None:
         """ Set up WGS polygons and starting and end locations. """
-        self.__waypoint_distance = 240  # meters between each waypoint.
-        self.__temporal_truth = True  # True: use temporal truth, False: use spatial truth.
-        self.__polygon_border = pd.read_csv(os.getcwd() + "/csv/polygon_border.csv").to_numpy()
-        self.__polygon_obstacle = pd.read_csv(os.getcwd() + "/csv/polygon_obstacle.csv").to_numpy()
+        self.__waypoint_distance = .1  # meters between each waypoint.
+        self.__polygon_border = np.array([[0, 0],
+                                          [1, 0],
+                                          [1, 1],
+                                          [0, 1],
+                                          [0, 0]])  # polygon for the operational area.
+        self.__polygon_obstacle = None  # polygon for the obstacle.
+        self.__loc_start = np.array([0., 0.5])  # starting location in (x, y).
+        self.__loc_end = None
+
+        # self.__temporal_truth = True  # True: use temporal truth, False: use spatial truth.
+        # self.__polygon_border = pd.read_csv(os.getcwd() + "/csv/polygon_border.csv").to_numpy()
+        # self.__polygon_obstacle = pd.read_csv(os.getcwd() + "/csv/polygon_obstacle.csv").to_numpy()
 
         # self.__wgs_polygon_border = pd.read_csv(os.getcwd() + "/csv/polygon_border.csv").to_numpy()
         # self.__wgs_polygon_obstacle = pd.read_csv(os.getcwd() + "/csv/polygon_obstacle.csv").to_numpy()
@@ -49,16 +58,16 @@ class Config:
         self.__polygon_obstacle_shapely = Polygon(self.__polygon_obstacle)
         self.__line_obstacle_shapely = LineString(self.__polygon_obstacle)
 
-        x, y = WGS.latlon2xy(self.__wgs_loc_start[0], self.__wgs_loc_start[1])
-        self.__loc_start = np.array([x, y])
-        x, y = WGS.latlon2xy(self.__wgs_loc_end[0], self.__wgs_loc_end[1])
-        self.__loc_end = np.array([x, y])
+        # x, y = WGS.latlon2xy(self.__wgs_loc_start[0], self.__wgs_loc_start[1])
+        # self.__loc_start = np.array([x, y])
+        # x, y = WGS.latlon2xy(self.__wgs_loc_end[0], self.__wgs_loc_end[1])
+        # self.__loc_end = np.array([x, y])
 
         """ Budget mode """
         self.__budget_mode = False
 
         """ Default simulation parameter seteup. """
-        self.__num_steps = 4  # number of steps.
+        self.__num_steps = 5  # number of steps.
         self.__num_replicates = 1  # number of replicates
         self.__num_cores = 1  # number of cores to use
 
