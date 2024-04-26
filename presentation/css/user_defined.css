@@ -1,0 +1,43 @@
+.front-page {
+    height: 100vh;
+    font-family: Arial, sans-serif;
+    background-color: #1b458e; /* This is an assumed color */
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0; 
+}
+
+.front-page-logo {
+    width: 45%;
+    height: auto;
+    position: absolute;
+    top: 5rem;
+}
+
+.front-page-title {
+    font-size: 45px;    
+    font-weight: bold;
+    margin-bottom: 2.5rem; 
+    margin-top: 2.5rem; 
+}
+
+.front-page-subtitle {
+    font-size: 45px;
+    font-weight: bold;
+    margin: 0 5rem 2.5rem 5rem;
+}
+
+.front-page-supplementary-info {
+    display: flex; 
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* margin-top: 2rem; */
+    font-size: 30px; 
+    color: rgb(217, 217, 217);
+    gap: 1rem;
+}

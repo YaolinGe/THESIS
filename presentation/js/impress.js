@@ -137,7 +137,8 @@
             scale = config.minScale;
         }
 
-        return scale;
+        // return scale;
+        return 1; // Always return 1 for now, as we don't want to scale the window
     };
 
     // CHECK SUPPORT
