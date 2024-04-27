@@ -51,4 +51,15 @@ __pycache__/
 **/*.png
 **/**.png
 
-
+/assets/**/*.jpeg
+/assets/**/*.jpg
+/assets/**/*.png
+/assets/**/*.mp4
+/assets/**/*.avi
+/assets/**/*.mov
+/assets/**/*.mkv
+/assets/**/*.flv
+/assets/**/*.wmv
+/assets/**/*.gif
+assets/
+/assets/
