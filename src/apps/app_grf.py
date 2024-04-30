@@ -27,9 +27,13 @@ Methodology:
 import numpy as np
 import pandas as pd
 import streamlit as st
+import streamlit.components.v1 as components
+import redis
 import plotly.graph_objects as go
 import matplotlib.pyplot as plt
 from GRF import GRF
+
+redis_host = redis.Redis(host='localhost', port=6379, db=0, decode_responses=True)
 
 
 # polygon_border_wgs = pd.read_csv("polygon_border.csv").to_numpy()
@@ -42,7 +46,6 @@ sigma = .2
 nugget = .01
 threshold = .5
 
-st.title('Demo-Gaussian Random Field (GRF)')
 with st.sidebar.expander("Parameters"):
     grid_size = st.slider('Grid size', 0.015, .5, grid_size)
     lateral_range = st.slider('Lateral Range', 0.01, 1.0, lateral_range)
@@ -50,7 +53,16 @@ with st.sidebar.expander("Parameters"):
     nugget = st.slider('$\epsilon$', 0.01, 1.0, nugget)
     threshold = st.slider('$\zeta$', 0.01, 1.0, threshold)
 
+    redis_host.set('grid_size', grid_size)
+    redis_host.set('lateral_range', lateral_range)
+    redis_host.set('sigma', sigma)
+    redis_host.set('nugget', nugget)
+    redis_host.set('threshold', threshold)
+    redis_host.set('polygon_border', polygon_border)
+    redis_host.set('polygon_obstacle', polygon_obstacle)
+
 with st.sidebar.expander("Control"):
+    isShow3D = st.toggle('Show 3D')
     isShowGrid = st.toggle('Show Grid')
     isShowCovariance = st.toggle('Show Covariance')
     isShowPriorMean = st.toggle('Show Prior Mean', True)
@@ -58,8 +70,16 @@ with st.sidebar.expander("Control"):
     isShowExcursionSet = st.toggle('Show Excursion Set')
     isShowExcursionProbability = st.toggle('Show Excursion Probability')
     isShowEIBV = st.toggle('Show EIBV')
-    
 
+
+if isShow3D:
+    st.title('3D GRF Demo')
+else:
+    st.title('2D GRF Demo')
+
+
+parameter_string = f'grid_size={grid_size}&lateral_range={lateral_range}&sigma={sigma}&nugget={nugget}&threshold={threshold}'
+components.iframe(f"http://localhost:8050?{parameter_string}", height=500)
 
 grf = GRF(polygon_border, polygon_obstacle, grid_size, lateral_range, sigma, nugget, threshold)
 
