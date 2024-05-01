@@ -6,34 +6,12 @@ from makePlots import random_realization
 from makePlots import histogram
 from makePlots import kernel_density_estimation
 from makeFormulas import makeFormulaForGRF
+from manageSessionStates import senseState
+from usr_func.interpolate_2d import interpolate_2d
+from usr_func.generate_a_path import generate_a_path
 import time
 
-if "truth" not in st.session_state:
-    st.session_state["truth"] = None
-
-if "x" not in st.session_state:
-    st.session_state["x"] = 0.5
-
-if "y" not in st.session_state:
-    st.session_state["y"] = 0.5
-
-if "mean" not in st.session_state:
-    st.session_state["mean"] = []
-
-if "sigma" not in st.session_state:
-    st.session_state["sigma"] = 0.2
-
-if "nugget" not in st.session_state:
-    st.session_state["nugget"] = 0.01
-
-if "threshold" not in st.session_state:
-    st.session_state["threshold"] = 0.5
-
-if "lateral_range" not in st.session_state:
-    st.session_state["lateral_range"] = 0.6
-
-if "grid_size" not in st.session_state:
-    st.session_state["grid_size"] = 0.05
+senseState.initialize()
 
 def generate_animated_realizations(grf, number_of_nodes, x, y, number_of_realizations: int=10):
     progress_bar = st.progress(0)
@@ -54,8 +32,8 @@ def generate_animated_realizations(grf, number_of_nodes, x, y, number_of_realiza
 grf_instance = None
 def initialize_grf():
     global grf_instance
-    polygon_border = np.array([[0, 0], [1, 0], [1, 1], [0, 1], [0, 0]])
-    polygon_obstacle = np.empty((0, 2))
+    polygon_border = st.session_state["polygon_border"]
+    polygon_obstacle = st.session_state["polygon_obstacle"]
     grid_size = st.session_state["grid_size"]
     lateral_range = st.session_state["lateral_range"]
     sigma = st.session_state["sigma"]
@@ -98,10 +76,30 @@ def renderSensePage():
 
     with st.sidebar.expander("Why is it useful?"):
         isDataAssimilation = st.checkbox("Data assimilation", value=False)
-        isShowFormula = st.toggle("Show formula", False)
+        isHideFormula = st.toggle("Hide formula", False)
+        st.session_state['isGridInterpolated'] = st.toggle("Interpolate for visualization", False)
+        isRandomPath = st.button("Generate random path")
+        path = np.array([[0.5, 0.01], [0.5, .99]])
+        middle_points = np.linspace(path[0], path[1], num=10, endpoint=False)[1:-1]
+        path = np.concatenate((path, middle_points), axis=0)
+        st.session_state["path"] = path
+        if isRandomPath:
+            path = generate_a_path((np.amin(grf.grid[:, 0]), np.amax(grf.grid[:, 0])), 
+                                   (np.amin(grf.grid[:, 1]), np.amax(grf.grid[:, 1])), 0.1, np.random.randint(5, 16))
+            st.session_state["path"] = path
+        st.session_state["grid_size"] = st.slider("Grid size", 0.02, 0.5, 0.1)
         st.session_state["sigma"] = st.slider("σ", 0.01, 1.0, 0.2)
         st.session_state["nugget"] = st.slider(r"$\tau$", 0.01, 1.0, 0.01)
         st.session_state["lateral_range"] = st.slider(r"$\frac{4.5}{\phi}$", 0.1, 1.0, 0.6)
+        grf.update_kernel(polygon_border=st.session_state["polygon_border"],
+                          polygon_obstacle=st.session_state["polygon_obstacle"],
+                          grid_size=st.session_state["grid_size"],
+                          lateral_range=st.session_state["lateral_range"],
+                          sigma=st.session_state["sigma"],
+                          nugget=st.session_state["nugget"],
+                          threshold=st.session_state["threshold"])
+
+
 
 
 
@@ -158,9 +156,102 @@ def renderSensePage():
                 st.write("You need to generate the GRF first.")
 
     else:
-        if isShowFormula:
+        if not isHideFormula:
             makeFormulaForGRF.render()
         
+        def make_subplot(x, y, value, title, xaxis_title, yaxis_title, colorscale='BrBG', cmin=0, cmax=1, path=None):
+            fig = go.Figure()
+            if st.session_state['isGridInterpolated']: 
+                try: 
+                    grid_x, grid_y, value = interpolate_2d(x, y, 50, 50, value)
+                    x = grid_x.flatten()
+                    y = grid_y.flatten()
+                except:
+                    pass
+            fig.add_trace(
+                go.Scatter(x=x, y=y, mode='markers', marker=dict(size=10, color=value.flatten(), colorscale=colorscale, showscale=True, cmin=cmin, cmax=cmax, colorbar=dict(thickness=20)))
+            )
+            if path is not None:
+                fig.add_trace(go.Scatter(x=path[:, 0], y=path[:, 1], mode='lines', line=dict(color='red', width=4)))
+            fig.update_layout(width=500, height=500,
+                            xaxis_title=xaxis_title,
+                            yaxis_title=yaxis_title, 
+                            title=title, 
+                            title_x=0.35,
+                            showlegend=False
+                            )
+            return fig
         
+        col1, col2, col3 = st.columns(3)
+        with col1: 
+            fig = go.Figure(data=go.Heatmap(z=grf.get_covariance_matrix(), 
+                                    colorscale='RdBu',
+                                    x0=0,
+                                    y0=1,
+                                    dx=1,
+                                    dy=-1))
+            fig.update_layout(width=500, height=500,
+                            xaxis_title="X",
+                            yaxis_title="Y", 
+                            title="Covariance matrix", 
+                            title_x=0.35)
+            st.plotly_chart(fig, use_container_width=True)
         
+        with col2: 
+            fig = make_subplot(grf.grid[:, 0], grf.grid[:, 1], grf.get_mu().flatten(), "Prior mean", "X", "Y")
+            st.plotly_chart(fig, use_container_width=True)
+        
+        with col3: 
+            fig = make_subplot(grf.grid[:, 0], grf.grid[:, 1], np.sqrt(np.diag(grf.get_covariance_matrix())), "Prior uncertainty field", "X", "Y", colorscale='GnBu', cmin=0, cmax=1)
+            st.plotly_chart(fig, use_container_width=True)
+        
+        col1, col2, col3 = st.columns(3)
+        truth1 = grf.get_random_realization()
+        truth2 = grf.get_random_realization()
+        truth3 = grf.get_random_realization()
+        with col1: 
+            fig = make_subplot(grf.grid[:, 0], grf.grid[:, 1], truth1.flatten(), "Ground truth I", "X", "Y", path=st.session_state["path"])
+            st.plotly_chart(fig, use_container_width=True)
+        
+        with col2:
+            fig = make_subplot(grf.grid[:, 0], grf.grid[:, 1], truth2.flatten(), "Ground truth II", "X", "Y", path=st.session_state["path"])
+            st.plotly_chart(fig, use_container_width=True)
 
+        with col3:
+            fig = make_subplot(grf.grid[:, 0], grf.grid[:, 1], truth3.flatten(), "Ground truth III", "X", "Y", path=st.session_state["path"])
+            st.plotly_chart(fig, use_container_width=True)
+        
+        col1, col2, col3 = st.columns(3)
+        ind_sampled = grf.get_ind_from_location(st.session_state["path"])
+        x_path = st.session_state["path"][:, 0]
+        y_path = st.session_state["path"][:, 1]
+        with col1: 
+            data = np.column_stack((x_path, y_path, truth1[ind_sampled, 0]))
+            grf.assimilate_data(data)
+            fig = make_subplot(grf.grid[:, 0], grf.grid[:, 1], grf.get_mu().flatten(), "Posterior mean I", "X", "Y", path=st.session_state["path"])
+            st.plotly_chart(fig, use_container_width=True)
+    
+        with col2:
+            data = np.column_stack((x_path, y_path, truth2[ind_sampled, 0]))
+            grf.assimilate_data(data)
+            fig = make_subplot(grf.grid[:, 0], grf.grid[:, 1], grf.get_mu().flatten(), "Posterior mean II", "X", "Y", path=st.session_state["path"])
+            st.plotly_chart(fig, use_container_width=True)
+        
+        with col3:
+            data = np.column_stack((x_path, y_path, truth3[ind_sampled, 0]))
+            grf.assimilate_data(data)
+            fig = make_subplot(grf.grid[:, 0], grf.grid[:, 1], grf.get_mu().flatten(), "Posterior mean III", "X", "Y", path=st.session_state["path"])
+            st.plotly_chart(fig, use_container_width=True)
+
+        col1, col2, col3 = st.columns(3)
+        with col1: 
+            fig = make_subplot(grf.grid[:, 0], grf.grid[:, 1], np.sqrt(np.diag(grf.get_covariance_matrix())), "Posterior uncertainty field I", "X", "Y", colorscale='GnBu', cmin=0, cmax=st.session_state["sigma"], path=st.session_state["path"])
+            st.plotly_chart(fig, use_container_width=True)
+        
+        with col2:
+            fig = make_subplot(grf.grid[:, 0], grf.grid[:, 1], np.sqrt(np.diag(grf.get_covariance_matrix())), "Posterior uncertainty field II", "X", "Y", colorscale='GnBu', cmin=0, cmax=st.session_state["sigma"], path=st.session_state["path"])
+            st.plotly_chart(fig, use_container_width=True)
+        
+        with col3:
+            fig = make_subplot(grf.grid[:, 0], grf.grid[:, 1], np.sqrt(np.diag(grf.get_covariance_matrix())), "Posterior uncertainty field III", "X", "Y", colorscale='GnBu', cmin=0, cmax=st.session_state["sigma"], path=st.session_state["path"])
+            st.plotly_chart(fig, use_container_width=True)
