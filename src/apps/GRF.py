@@ -45,7 +45,35 @@ class GRF:
         """
         Set up the Gaussian Random Field (GRF) kernel.
         """
-        # self.config = Config()
+        self.update_kernel(polygon_border, polygon_obstacle, grid_size, lateral_range, sigma, nugget, threshold)
+        # # self.config = Config()
+        # self.polygon_border = polygon_border
+        # self.polygon_border_shapely = Polygon(polygon_border)
+        # self.polygon_obstacle = polygon_obstacle
+        # self.polygon_obstacle_shapely = Polygon(polygon_obstacle)
+
+        # """ Empirical parameters """
+        # self.__sigma = sigma
+        # self.__nugget = nugget
+        # self.__threshold = threshold
+        # self.__grid_size = grid_size
+        # self.__lateral_range = lateral_range
+        # self.__eta = 4.5 / self.__lateral_range  # decay factor
+        # self.__tau = np.sqrt(self.__nugget)  # measurement noise
+
+        # self.__discretize_grf_grid()
+        # self.__construct_covariance_matrix()
+        # self.__construct_prior_mean()
+        # self.__load_cdf_interpolator()
+        # self.__mu_prior = self.__mu
+        # self.__Sigma_prior = self.__Sigma
+        # self.__cnt = 0
+
+    def update_kernel(self, polygon_border: np.ndarray, polygon_obstacle: np.ndarray,  grid_size: float = .1,
+                 lateral_range: float = .6, sigma: float = .2, nugget: float = .01, threshold: float = .5) -> None: 
+        """
+        Update the GRF kernel.
+        """
         self.polygon_border = polygon_border
         self.polygon_border_shapely = Polygon(polygon_border)
         self.polygon_obstacle = polygon_obstacle
@@ -58,8 +86,7 @@ class GRF:
         self.__grid_size = grid_size
         self.__lateral_range = lateral_range
         self.__eta = 4.5 / self.__lateral_range  # decay factor
-        self.__tau = np.sqrt(self.__nugget)  # measurement noise
-
+        self.__tau = np.sqrt(self.__nugget)
         self.__discretize_grf_grid()
         self.__construct_covariance_matrix()
         self.__construct_prior_mean()
@@ -321,7 +348,7 @@ class GRF:
     def get_ind_from_location(self, loc: np.ndarray) -> Union[int, np.ndarray, None]:
         """
         Args:
-            loc: np.array([xp, yp, zp])
+            loc: np.array([xp, yp])
         Returns: index of the closest waypoint.
         """
         if len(loc) > 0:
@@ -467,6 +494,20 @@ class GRF:
             array([0.1, 0.2, 0.3])
         """
         return norm.cdf(self.__threshold, self.__mu.flatten(), np.sqrt(np.diag(self.__Sigma)))
+
+    def get_mu_prior(self) -> np.ndarray:
+        """
+        Return the prior mean.
+
+        Returns:
+            mu_prior: prior mean
+
+        Examples:
+            >>> grf = GRF()
+            >>> grf.get_mu_prior()
+            array([0.1, 0.2, 0.3])
+        """
+        return self.__mu_prior
 
 
 if __name__ == "__main__":
