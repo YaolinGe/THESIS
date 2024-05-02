@@ -1,11 +1,7 @@
 """
 This app is used to demonstrate the GRF algorithm. The user can adjust the parameters of the algorithm and see the results in real-time.
 """
-import numpy as np
 import streamlit as st
-import streamlit.components.v1 as components
-import plotly.graph_objects as go
-import matplotlib.pyplot as plt
 from Components.Sense import renderSensePage
 from Components.Plan import renderPlanPage
 from Components.Act import renderActPage

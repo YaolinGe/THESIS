@@ -28,7 +28,7 @@ def plot(fig, grid, truth, number_of_nodes: int=50, x: float=0.5, y: float=0.5):
     fig.update_layout(
         # title_text="Random realization",
         width=500,
-        height=700,
+        height=550,
         autosize=False,
         margin=dict(l=0, r=0, t=30, b=0),
         xaxis=dict(

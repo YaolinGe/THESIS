@@ -33,7 +33,7 @@ def plot(values):
     fig = go.Figure(data=[go.Histogram(x=values, nbinsx=10, histnorm='density', opacity=0.6, marker_color='green')])
     fig.update_layout(
         width=500,
-        height=700,
+        height=550,
         autosize=False,
         margin=dict(l=0, r=0, t=30, b=0),
         xaxis=dict(

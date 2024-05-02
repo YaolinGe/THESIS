@@ -229,12 +229,33 @@ class GRF:
         self.__mu = self.__mu + self.__Sigma @ F.T @ np.linalg.solve(C, (salinity_measured - F @ self.__mu))
         self.__Sigma = self.__Sigma - self.__Sigma @ F.T @ np.linalg.solve(C, F @ self.__Sigma)
 
+    def get_ei_field_at_locations(self, locations: np.ndarray) -> np.ndarray:
+        """
+        Calculate the EIBV field and the IVR field for a given set of locations.
+
+        Args:
+            locations: np.array([x, y])
+        
+        Methodology:
+            1. Get the indices of the locations.
+            2. Calculate the EIBV and IVR using the analytical formula with fast approximation.
+        """
+        indices_candidates = self.get_ind_from_location(locations)
+        ivr = np.zeros([len(indices_candidates), 1])
+        eibv = np.zeros([len(indices_candidates), 1])
+        for i in range(len(indices_candidates)):
+            sigma_diag, vr_diag = self.__get_posterior_sigma_diag_vr_diag(indices_candidates[i])
+            eibv[i] = self.__cal_analytical_eibv_fast(self.__mu, sigma_diag, vr_diag, self.__threshold)
+            ivr[i] = np.sum(vr_diag)
+            # eibv2[i] = self.__cal_analytical_eibv(self.__mu, sigma_diag, vr_diag, self.__threshold)
+        return eibv, ivr
+
     def get_eibv_at_locations(self, locations: np.ndarray) -> np.ndarray:
         """
         Calculate the EIBV for a given set of locations.
 
         Args:
-            locations: np.array([x, y, z])
+            locations: np.array([x, y])
 
         Methodology:
             1. Get the indices of the locations.

@@ -58,7 +58,7 @@ def plot(values):
     )
     fig.update_layout(
         width=500,
-        height=700,
+        height=550,
         autosize=False,
         margin=dict(l=0, r=0, t=30, b=0),
         xaxis=dict(

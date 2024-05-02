@@ -5,41 +5,23 @@ from GRF import GRF
 from makePlots import random_realization
 from makePlots import histogram
 from makePlots import kernel_density_estimation
+from makePlots.generate_animated_realizations import generate_animated_realizations
+from manageStates.initializeSenseState import initializeSenseState
 from makeFormulas import makeFormulaForGRF
-from manageSessionStates import senseState
 from usr_func.interpolate_2d import interpolate_2d
 from usr_func.generate_a_path import generate_a_path
-import time
 
-senseState.initialize()
-
-def generate_animated_realizations(grf, number_of_nodes, x, y, number_of_realizations: int=10):
-    progress_bar = st.progress(0)
-    chart_placeholder = st.empty()
-
-    for i in range(number_of_realizations):
-        st.session_state["truth"] = grf.get_random_realization()
-        ind = grf.get_ind_from_location(np.array([x, y]))
-        mean = st.session_state["truth"][ind, 0][0]
-        st.session_state["mean"].append(mean)
-        progress_bar.progress((i + 1) / number_of_realizations)
-        fig = go.Figure()
-        random_realization.plot(fig, grf.grid, st.session_state["truth"], number_of_nodes, x, y)
-        chart_placeholder.plotly_chart(fig, use_container_width=True)
-
-    progress_bar.empty()
 
 grf_instance = None
 def initialize_grf():
     global grf_instance
-    polygon_border = st.session_state["polygon_border"]
-    polygon_obstacle = st.session_state["polygon_obstacle"]
-    grid_size = st.session_state["grid_size"]
-    lateral_range = st.session_state["lateral_range"]
-    sigma = st.session_state["sigma"]
-    nugget = st.session_state["nugget"]
-    threshold = st.session_state["threshold"]
-    grf_instance = GRF(polygon_border, polygon_obstacle, grid_size, lateral_range, sigma, nugget, threshold)
+    grf_instance = GRF(polygon_border=st.session_state["polygon_border"],
+                    polygon_obstacle=st.session_state["polygon_obstacle"],
+                    grid_size=st.session_state["grid_size"],
+                    lateral_range=st.session_state["lateral_range"],
+                    sigma=st.session_state["sigma"],
+                    nugget=st.session_state["nugget"],
+                    threshold=st.session_state["threshold"])
 
 
 
@@ -48,6 +30,9 @@ def initialize_grf():
 
 """ Render the Sense page """
 def renderSensePage():
+    
+    initializeSenseState()
+
     global grf_instance
     if grf_instance is None:
         initialize_grf()
@@ -78,6 +63,7 @@ def renderSensePage():
         isDataAssimilation = st.checkbox("Data assimilation", value=False)
         isHideFormula = st.toggle("Hide formula", False)
         st.session_state['isGridInterpolated'] = st.toggle("Interpolate for visualization", False)
+        isShowPath = st.toggle("Show path", False)
         isRandomPath = st.button("Generate random path")
         path = np.array([[0.5, 0.01], [0.5, .99]])
         middle_points = np.linspace(path[0], path[1], num=10, endpoint=False)[1:-1]
@@ -159,7 +145,7 @@ def renderSensePage():
         if not isHideFormula:
             makeFormulaForGRF.render()
         
-        def make_subplot(x, y, value, title, xaxis_title, yaxis_title, colorscale='BrBG', cmin=0, cmax=1, path=None):
+        def make_subplot(x, y, value, title, xaxis_title, yaxis_title, colorscale='BrBG', cmin=0, cmax=1, path=None, title_x=0.35):
             fig = go.Figure()
             if st.session_state['isGridInterpolated']: 
                 try: 
@@ -172,12 +158,13 @@ def renderSensePage():
                 go.Scatter(x=x, y=y, mode='markers', marker=dict(size=10, color=value.flatten(), colorscale=colorscale, showscale=True, cmin=cmin, cmax=cmax, colorbar=dict(thickness=20)))
             )
             if path is not None:
-                fig.add_trace(go.Scatter(x=path[:, 0], y=path[:, 1], mode='lines', line=dict(color='red', width=4)))
-            fig.update_layout(width=500, height=500,
+                if isShowPath: 
+                    fig.add_trace(go.Scatter(x=path[:, 0], y=path[:, 1], mode='lines', line=dict(color='red', width=4)))
+            fig.update_layout(width=350, height=400,
                             xaxis_title=xaxis_title,
                             yaxis_title=yaxis_title, 
                             title=title, 
-                            title_x=0.35,
+                            title_x=title_x,
                             showlegend=False
                             )
             return fig
@@ -190,7 +177,7 @@ def renderSensePage():
                                     y0=1,
                                     dx=1,
                                     dy=-1))
-            fig.update_layout(width=500, height=500,
+            fig.update_layout(width=350, height=400,
                             xaxis_title="X",
                             yaxis_title="Y", 
                             title="Covariance matrix", 
@@ -202,7 +189,7 @@ def renderSensePage():
             st.plotly_chart(fig, use_container_width=True)
         
         with col3: 
-            fig = make_subplot(grf.grid[:, 0], grf.grid[:, 1], np.sqrt(np.diag(grf.get_covariance_matrix())), "Prior uncertainty field", "X", "Y", colorscale='GnBu', cmin=0, cmax=1)
+            fig = make_subplot(grf.grid[:, 0], grf.grid[:, 1], np.sqrt(np.diag(grf.get_covariance_matrix())), "Prior uncertainty field", "X", "Y", colorscale='GnBu', cmin=0, cmax=1, title_x=.25)
             st.plotly_chart(fig, use_container_width=True)
         
         col1, col2, col3 = st.columns(3)
@@ -245,13 +232,13 @@ def renderSensePage():
 
         col1, col2, col3 = st.columns(3)
         with col1: 
-            fig = make_subplot(grf.grid[:, 0], grf.grid[:, 1], np.sqrt(np.diag(grf.get_covariance_matrix())), "Posterior uncertainty field I", "X", "Y", colorscale='GnBu', cmin=0, cmax=st.session_state["sigma"], path=st.session_state["path"])
+            fig = make_subplot(grf.grid[:, 0], grf.grid[:, 1], np.sqrt(np.diag(grf.get_covariance_matrix())), "Posterior uncertainty field I", "X", "Y", colorscale='GnBu', cmin=0, cmax=st.session_state["sigma"], path=st.session_state["path"], title_x=.2)
             st.plotly_chart(fig, use_container_width=True)
         
         with col2:
-            fig = make_subplot(grf.grid[:, 0], grf.grid[:, 1], np.sqrt(np.diag(grf.get_covariance_matrix())), "Posterior uncertainty field II", "X", "Y", colorscale='GnBu', cmin=0, cmax=st.session_state["sigma"], path=st.session_state["path"])
+            fig = make_subplot(grf.grid[:, 0], grf.grid[:, 1], np.sqrt(np.diag(grf.get_covariance_matrix())), "Posterior uncertainty field II", "X", "Y", colorscale='GnBu', cmin=0, cmax=st.session_state["sigma"], path=st.session_state["path"], title_x=.2)
             st.plotly_chart(fig, use_container_width=True)
         
         with col3:
-            fig = make_subplot(grf.grid[:, 0], grf.grid[:, 1], np.sqrt(np.diag(grf.get_covariance_matrix())), "Posterior uncertainty field III", "X", "Y", colorscale='GnBu', cmin=0, cmax=st.session_state["sigma"], path=st.session_state["path"])
+            fig = make_subplot(grf.grid[:, 0], grf.grid[:, 1], np.sqrt(np.diag(grf.get_covariance_matrix())), "Posterior uncertainty field III", "X", "Y", colorscale='GnBu', cmin=0, cmax=st.session_state["sigma"], path=st.session_state["path"], title_x=.2)
             st.plotly_chart(fig, use_container_width=True)
