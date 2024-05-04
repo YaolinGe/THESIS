@@ -2,14 +2,16 @@
 A* algorithm for path planning.
 """
 
-from shapely.geometry import Polygon, Point
+from shapely.geometry import Polygon, Point, LineString
+import streamlit as st
+import plotly.graph_objects as go
 import numpy as np
-import pandas as pd
+# import pandas as pd
 import matplotlib.pyplot as plt
 import math
-import os
-from unittest import TestCase
-from matplotlib.gridspec import GridSpec
+# import os
+# from unittest import TestCase
+# from matplotlib.gridspec import GridSpec
 
 
 class Node:
@@ -31,12 +33,15 @@ class AStar:
         self.polygon_obstacles_shapely = [Polygon(plg) for plg in self.polygon_obstacles]
 
     def search_path(self, loc_start, loc_end, max_iter: int=2000, stepsize: float=.05,
-                    distance_tolerance_target: float=.075, distance_tolerance: float=.02) -> list:
+                    distance_tolerance_target: float=.075, distance_tolerance: float=.02, animated: bool=False) -> list:
+        self.loc_start = loc_start
+        self.loc_target = loc_end
         self.cnt = 0
         self.open_list = []
         self.closed_list = []
         self.path = []
         self.arrival = False
+        self.animated = animated
 
         self.max_iter = max_iter
         self.stepsize = stepsize
@@ -56,6 +61,24 @@ class AStar:
         # s2: append open list
         self.open_list.append(self.start_node)
 
+
+        ### Animation
+        if self.animated:
+            fig = go.Figure()
+            fig.update_layout(
+                width=500, 
+                height=700,
+                showlegend=False,
+                )
+            fig.add_trace(go.Scatter(x=self.polygon_border[:, 0], y=self.polygon_border[:, 1], mode='lines', line=dict(color='red', dash='dash')))
+            for obs in self.polygon_obstacles:
+                fig.add_trace(go.Scatter(x=obs[:, 0], y=obs[:, 1], mode='lines', line=dict(color='red')))
+            fig.add_trace(go.Scatter(x=[self.loc_start[0]], y=[self.loc_start[1]], mode='markers', marker=dict(size=20, color='green')))
+            fig.add_trace(go.Scatter(x=[self.loc_target[0]], y=[self.loc_target[1]], mode='markers', marker=dict(size=20, color='blue')))
+            progress_bar = st.progress(0)
+            self.chart_placeholder = st.empty()
+
+
         # s3: loop open list
         while len(self.open_list) > 0:
             # s31: find smallest cost node and append this to closed list and remove it from open list.
@@ -74,8 +97,8 @@ class AStar:
                 ang = math.radians(angle)
                 xn = node_now.x + np.cos(ang) * self.stepsize
                 yn = node_now.y + np.sin(ang) * self.stepsize
-                loc_n = [xn, yn]
-                if self.is_within_obstacle(loc_n) or not self.is_within_border(loc_n):
+                loc_n = np.array([xn, yn])
+                if self.is_within_obstacle(loc_n) or not self.is_within_border(loc_n) or not self.is_path_legal(np.array([node_now.x, node_now.y]), loc_n):
                     continue
                 node_new = Node(loc_n, node_now)
                 children.append(node_new)
@@ -90,37 +113,19 @@ class AStar:
                 child.f = child.g + child.h
 
                 if self.is_node_in_list(child, self.open_list):
-                    # print("skip")
                     continue
 
                 self.open_list.append(child)
 
-            # fig = plt.figure(figsize=(10, 10))
-            # gs = GridSpec(nrows=1, ncols=1)
-            #
-            # def plf():
-            #     plt.plot(self.polygon_border[:, 0], self.polygon_border[:, 1], 'r-.')
-            #     plt.plot(self.polygon_obstacles[:, 0], self.polygon_obstacles[:, 1], 'r-.')
-            #     plt.plot(self.start_node.x, self.start_node.y, 'k.', markersize=25)
-            #     plt.plot(self.end_node.x, self.end_node.y, 'b*', markersize=25)
-            #     if self.arrival:
-            #         pa = np.array(self.path)
-            #         plt.plot(pa[:, 0], pa[:, 1], 'r.-', markersize=20)
+            if self.animated:
+                fig.add_trace(go.Scatter(x=[node.x for node in self.open_list], y=[node.y for node in self.open_list], mode='markers', marker=dict(size=5, color='cyan')))
+                fig.add_trace(go.Scatter(x=[node.x for node in self.closed_list], y=[node.y for node in self.closed_list], mode='markers', marker=dict(size=2.5, color='gray'), opacity=.5))
+                fig.add_trace(go.Scatter(x=[node_now.x], y=[node_now.y], mode='markers', marker=dict(size=5, color='white')))
+                fig.add_trace(go.Scatter(x=[child.x for child in children], y=[child.y for child in children], mode='markers', marker=dict(size=2.5, color='red'), opacity=.5))
+                self.chart_placeholder.plotly_chart(fig, use_container_width=True)
+                progress_bar.progress(self.cnt / self.max_iter)
 
-            # ax = fig.add_subplot(gs[0])
-            # plf()
-            # for item in self.open_list:
-            #     ax.plot(item.x, item.y, 'c.', alpha=.2, markersize=20)
-            # for item in self.closed_list:
-            #     ax.plot(item.x, item.y, 'k.', alpha=.2, markersize=20)
-            # plt.plot(node_now.x, node_now.y, 'g.', markersize=20)
-            # for child in children:
-            #     ax.plot(child.x, child.y, 'r.', alpha=.2, markersize=20)
-
-            # plt.savefig(self.figpath + "P_{:03d}.png".format(self.cnt))
-            # plt.close("all")
-
-            print("cnt: ", self.cnt)
+            # print("cnt: ", self.cnt)
             self.cnt += 1
             if self.cnt > self.max_iter:
                 print("Cannot converge")
@@ -128,6 +133,12 @@ class AStar:
 
             if self.arrival:
                 print("Arrived")
+                self.path.insert(0, loc_end)
+                path = np.array(self.path)
+                if self.animated:
+                    fig.add_trace(go.Scatter(x=path[:, 0], y=path[:, 1], mode='lines', line=dict(width=5, color='yellow')))
+                    self.chart_placeholder.plotly_chart(fig, use_container_width=True)
+                    progress_bar.empty()
                 return self.path
 
     def get_min_cost_node(self):
@@ -164,53 +175,62 @@ class AStar:
                 return True
         return False
 
+    def is_path_legal(self, loc1: np.ndarray, loc2: np.ndarray) -> bool:
+        x1, y1 = loc1
+        x2, y2 = loc2
+        path = LineString([(x1, y1), (x2, y2)])
+        for plg in self.polygon_obstacles_shapely:
+            if plg.intersects(path):
+                return False
+        return True
+
     @staticmethod
     def get_distance_between_nodes(n1, n2):
         return np.sqrt((n1.x - n2.x)**2 + (n1.y - n2.y)**2)
 
 
-class TestAstar(TestCase):
-    def setUp(self) -> None:
-        self.plg_border = np.array([[0, 0],
-                               [0, 1],
-                               [1, 1],
-                               [1, 0],
-                               [0, 0]])
+# class TestAstar(TestCase):
+#     def setUp(self) -> None:
+#         self.plg_border = np.array([[0, 0],
+#                                [0, 1],
+#                                [1, 1],
+#                                [1, 0],
+#                                [0, 0]])
 
-        # self.plg_obstacle = np.array([[.5, .5],
-        #                               [.51, .5],
-        #                               [.51, .51],
-        #                               [.5, .51],
-        #                               [.5, .5]])
-        # self.plg_obstacle = np.array([[.25, .25],
-        #                          [.65, .25],
-        #                          [.65, .65],
-        #                          [.25, .65],
-        #                          [.25, .25]])
-        self.plg_obstacle = np.array([[.21, .21],
-                                      [.41, .21],
-                                      [.41, .61],
-                                      [.61, .61],
-                                      [.61, .21],
-                                      [.81, .21],
-                                      [.81, .81],
-                                      [.21, .81],
-                                      [.21, .21]])
-        self.wp = WaypointGraph()
-        self.wp.set_polygon_border(self.plg_border)
-        self.wp.set_polygon_obstacles([self.plg_obstacle])
-        self.wp.set_depth_layers([0])
-        self.wp.set_neighbour_distance(.05)
-        self.wp.construct_waypoints()
-        self.wp.construct_hash_neighbours()
-        self.waypoint = self.wp.get_waypoints()
+#         # self.plg_obstacle = np.array([[.5, .5],
+#         #                               [.51, .5],
+#         #                               [.51, .51],
+#         #                               [.5, .51],
+#         #                               [.5, .5]])
+#         # self.plg_obstacle = np.array([[.25, .25],
+#         #                          [.65, .25],
+#         #                          [.65, .65],
+#         #                          [.25, .65],
+#         #                          [.25, .25]])
+#         self.plg_obstacle = np.array([[.21, .21],
+#                                       [.41, .21],
+#                                       [.41, .61],
+#                                       [.61, .61],
+#                                       [.61, .21],
+#                                       [.81, .21],
+#                                       [.81, .81],
+#                                       [.21, .81],
+#                                       [.21, .21]])
+#         self.wp = WaypointGraph()
+#         self.wp.set_polygon_border(self.plg_border)
+#         self.wp.set_polygon_obstacles([self.plg_obstacle])
+#         self.wp.set_depth_layers([0])
+#         self.wp.set_neighbour_distance(.05)
+#         self.wp.construct_waypoints()
+#         self.wp.construct_hash_neighbours()
+#         self.waypoint = self.wp.get_waypoints()
 
-        self.astar = AStar(self.plg_border, self.plg_obstacle)
+#         self.astar = AStar(self.plg_border, self.plg_obstacle)
 
-    def test_astar(self):
-        loc_start = [.01, .01]
-        loc_end = [.99, .99]
-        self.astar.search_path(loc_start, loc_end)
+#     def test_astar(self):
+#         loc_start = [.01, .01]
+#         loc_end = [.99, .99]
+#         self.astar.search_path(loc_start, loc_end)
 
 
 

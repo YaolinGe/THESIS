@@ -6,6 +6,7 @@ import numpy as np
 from GRF import GRF
 from pathPlanningAlgorithms.PRM import PRM
 from pathPlanningAlgorithms.RRTStar import RRTStar
+from pathPlanningAlgorithms.AStar import AStar
 from manageStates.initializePlanState import initializePlanState
 from makePlots import gaussian_distribution
 from usr_func.interpolate_2d import interpolate_2d
@@ -47,10 +48,12 @@ def make_subplot(x, y, value, title, xaxis_title, yaxis_title, colorscale='BrBG'
 grf_instance = None
 prm_instance = None
 rrtstar_instance = None
+astar_instance = None
 def initialize_global_instances():
     global grf_instance
     global prm_instance
     global rrtstar_instance
+    global astar_instance
     grf_instance = GRF(polygon_border=st.session_state["polygon_border"],
                     polygon_obstacle=st.session_state["polygon_obstacle"],
                     grid_size=st.session_state["grid_size"],
@@ -62,7 +65,8 @@ def initialize_global_instances():
                     st.session_state['pathplanning_obstacles'])
     rrtstar_instance = RRTStar(st.session_state['pathplanning_border'], 
                     st.session_state['pathplanning_obstacles'])
-
+    astar_instance = AStar(st.session_state['pathplanning_border'],
+                    st.session_state['pathplanning_obstacles'])
 
 
 
@@ -74,13 +78,15 @@ def renderPlanPage():
     
     initializePlanState()
 
-    global grf_instance, prm_instance
+    global grf_instance, prm_instance, rrtstar_instance, astar_instance
     if grf_instance is None:
         initialize_global_instances()
 
     grf = grf_instance
     prm = prm_instance
     rrtstar = rrtstar_instance
+    astar = astar_instance
+
 
     st.sidebar.title("Demo Plan")
 
@@ -122,16 +128,18 @@ def renderPlanPage():
             isNonMyopicPathPlanning = st.toggle("Non-myopic", value=False)
         isSimulation = st.checkbox("Simulation", value=False)
         if isSimulation:
-            path_planning_algorithm = st.selectbox("Path Planning Algorithm", ["RRT*", "PRM", "A*"])
+            path_planning_algorithm = st.selectbox("Path Planning Algorithm", ["A*", "PRM", "RRT*", ])
             isAnimated = st.checkbox("Animated", value=False)
             isRunPathPlanningSimulation = st.button("Run")
-            col1, col2 = st.sidebar.columns(2)
+
             st.sidebar.markdown("### Location start")
+            col1, col2 = st.sidebar.columns(2)
             with col1:
                 x = st.slider("x", 0.01, .99, 0.01)
             with col2: 
                 y = st.slider("y", 0.01, .99, 0.01)
             st.session_state['loc_start'] = np.array([x, y])
+
             st.sidebar.markdown("### Location end")
             col1, col2 = st.sidebar.columns(2)
             with col1:
@@ -288,23 +296,21 @@ def renderPlanPage():
                 st.markdown("This is an illustration of non-myopic path planning.")
                 st.image("figs/nonmyopic.png")
         else:
-            st.title("Simulation")
+            st.title(f"{path_planning_algorithm} Simulation")
 
             if path_planning_algorithm == "A*":
-                pass
-            elif path_planning_algorithm == "RRT*":
-                st.session_state['rrtstar_max_expansion_iteration'] = st.sidebar.slider("Max expansion iteration", 100, 1000, 500)
-                st.session_state['rrtstar_stepsize'] = st.sidebar.slider("Stepsize", 0.01, 0.5, 0.1)
-                st.session_state['rrtstar_goal_sampling_rate'] = st.sidebar.slider("Goal sampling rate", 0.01, 0.5, 0.01)
-                st.session_state['rrtstar_home_radius'] = st.sidebar.slider("Home radius", 0.01, 0.5, 0.1)
-                st.session_state['rrtstar_neighbour_radius'] = st.sidebar.slider("Neighbour radius", 0.01, 0.5, 0.1)
-                if isRunPathPlanningSimulation:
-                    path = rrtstar.get_path(loc_start=st.session_state['loc_start'], loc_target=st.session_state['loc_end'], 
-                                            max_expansion_iteration=st.session_state['rrtstar_max_expansion_iteration'],
-                                            stepsize=st.session_state['rrtstar_stepsize'], goal_sampling_rate=st.session_state['rrtstar_goal_sampling_rate'], 
-                                            home_radius=st.session_state['rrtstar_home_radius'], rrtstar_neighbour_radius=st.session_state['rrtstar_neighbour_radius'],
-                                            animated=isAnimated)
-                    if not isAnimated:
+                st.session_state['astar_max_iter'] = st.sidebar.slider("Max iteration", 200, 2000, 1000)
+                st.session_state['astar_stepsize'] = st.sidebar.slider("Stepsize", 0.05, 0.5, 0.1)
+                st.session_state['astar_distance_tolerance_target'] = st.sidebar.slider("Distance tolerance target", 0.05, 0.2, 0.075)
+                st.session_state['astar_distance_tolerance'] = st.sidebar.slider("Distance tolerance", 0.05, 0.2, 0.075)
+                path = astar.search_path(st.session_state['loc_start'], st.session_state['loc_end'], 
+                                         max_iter=st.session_state['astar_max_iter'], stepsize=st.session_state['astar_stepsize'],
+                                         distance_tolerance_target=st.session_state['astar_distance_tolerance_target'],
+                                         distance_tolerance=st.session_state['astar_distance_tolerance'], animated=isAnimated)
+                if not isAnimated:
+                    if path is None:
+                        st.error("No path found.")
+                    else:
                         fig = go.Figure()
                         fig.update_layout(
                             width=500, 
@@ -314,48 +320,77 @@ def renderPlanPage():
                         fig.add_trace(go.Scatter(x=st.session_state['pathplanning_border'][:, 0], y=st.session_state['pathplanning_border'][:, 1], mode='lines', line=dict(color='red', dash='dash')))
                         for obs in st.session_state['pathplanning_obstacles']:
                             fig.add_trace(go.Scatter(x=obs[:, 0], y=obs[:, 1], mode='lines', line=dict(color='red')))
-                        for node in rrtstar.nodes:
-                            if node.get_parent() is not None:
-                                loc = node.get_location()
-                                loc_p = node.get_parent().get_location()
-                                fig.add_trace(go.Scatter(x=[loc[0], loc_p[0]], y=[loc[1], loc_p[1]], mode='lines', line=dict(color='white', width=0.5)))
                         path = np.array(path)
                         fig.add_trace(go.Scatter(x=path[:, 0], y=path[:, 1], mode='lines', line=dict(color='yellow', width=5)))
                         fig.add_trace(go.Scatter(x=[st.session_state['loc_start'][0]], y=[st.session_state['loc_start'][1]], mode='markers', marker=dict(size=20, color='green')))
                         fig.add_trace(go.Scatter(x=[st.session_state['loc_end'][0]], y=[st.session_state['loc_end'][1]], mode='markers', marker=dict(size=20, color='blue')))
                         st.plotly_chart(fig, use_container_width=True)
+                
+
+            elif path_planning_algorithm == "RRT*":
+                st.session_state['rrtstar_max_expansion_iteration'] = st.sidebar.slider("Max expansion iteration", 100, 2000, 1500)
+                st.session_state['rrtstar_stepsize'] = st.sidebar.slider("Stepsize", 0.01, 0.5, 0.1)
+                st.session_state['rrtstar_goal_sampling_rate'] = st.sidebar.slider("Goal sampling rate", 0.01, 0.5, 0.01)
+                st.session_state['rrtstar_home_radius'] = st.sidebar.slider("Home radius", 0.01, 0.5, 0.09)
+                st.session_state['rrtstar_neighbour_radius'] = st.sidebar.slider("Neighbour radius", 0.01, 0.5, 0.12)
+                # if isRunPathPlanningSimulation:
+                path = rrtstar.get_path(loc_start=st.session_state['loc_start'], loc_target=st.session_state['loc_end'], 
+                                        max_expansion_iteration=st.session_state['rrtstar_max_expansion_iteration'],
+                                        stepsize=st.session_state['rrtstar_stepsize'], goal_sampling_rate=st.session_state['rrtstar_goal_sampling_rate'], 
+                                        home_radius=st.session_state['rrtstar_home_radius'], rrtstar_neighbour_radius=st.session_state['rrtstar_neighbour_radius'],
+                                        animated=isAnimated)
+                if not isAnimated:
+                    fig = go.Figure()
+                    fig.update_layout(
+                        width=500, 
+                        height=700,
+                        showlegend=False,
+                        )
+                    fig.add_trace(go.Scatter(x=st.session_state['pathplanning_border'][:, 0], y=st.session_state['pathplanning_border'][:, 1], mode='lines', line=dict(color='red', dash='dash')))
+                    for obs in st.session_state['pathplanning_obstacles']:
+                        fig.add_trace(go.Scatter(x=obs[:, 0], y=obs[:, 1], mode='lines', line=dict(color='red')))
+                    for node in rrtstar.nodes:
+                        if node.get_parent() is not None:
+                            loc = node.get_location()
+                            loc_p = node.get_parent().get_location()
+                            fig.add_trace(go.Scatter(x=[loc[0], loc_p[0]], y=[loc[1], loc_p[1]], mode='lines', line=dict(color='white', width=0.5)))
+                    path = np.array(path)
+                    fig.add_trace(go.Scatter(x=path[:, 0], y=path[:, 1], mode='lines', line=dict(color='yellow', width=5)))
+                    fig.add_trace(go.Scatter(x=[st.session_state['loc_start'][0]], y=[st.session_state['loc_start'][1]], mode='markers', marker=dict(size=20, color='green')))
+                    fig.add_trace(go.Scatter(x=[st.session_state['loc_end'][0]], y=[st.session_state['loc_end'][1]], mode='markers', marker=dict(size=20, color='blue')))
+                    st.plotly_chart(fig, use_container_width=True)
 
 
             elif path_planning_algorithm == "PRM":
                 st.session_state['prm_num_nodes'] = st.sidebar.slider("Number of nodes", 10, 1000, 100)
                 st.session_state['prm_num_neighbours'] = st.sidebar.slider("Number of neighbours", 2, 20, 10)
 
-                if isRunPathPlanningSimulation:
-                    path, fig = prm.get_path(st.session_state['loc_start'], st.session_state['loc_end'], st.session_state['prm_num_nodes'], st.session_state['num_neighbours'], animated=isAnimated)
-                    if not isAnimated:
-                        fig = go.Figure()
-                        fig.update_layout(
-                            width=500, 
-                            height=700,
-                            showlegend=False,
-                            )
-                        fig.add_trace(go.Scatter(x=st.session_state['pathplanning_border'][:, 0], y=st.session_state['pathplanning_border'][:, 1], mode='lines', line=dict(color='red', dash='dash')))
-                        for obs in st.session_state['pathplanning_obstacles']:
-                            fig.add_trace(go.Scatter(x=obs[:, 0], y=obs[:, 1], mode='lines', line=dict(color='red')))
-                        loc_nodes = np.array([[node.x, node.y] for node in prm.nodes]).reshape(-1, 2)
-                        fig.add_trace(go.Scatter(x=loc_nodes[:, 0], y=loc_nodes[:, 1], mode='markers', marker=dict(size=7, color='white')))
-                        fig.add_trace(go.Scatter(x=[st.session_state['loc_start'][0]], y=[st.session_state['loc_start'][1]], mode='markers', marker=dict(size=20, color='green')))
-                        fig.add_trace(go.Scatter(x=[st.session_state['loc_end'][0]], y=[st.session_state['loc_end'][1]], mode='markers', marker=dict(size=20, color='blue')))
+                # if isRunPathPlanningSimulation:
+                path, fig = prm.get_path(st.session_state['loc_start'], st.session_state['loc_end'], st.session_state['prm_num_nodes'], st.session_state['num_neighbours'], animated=isAnimated)
+                if not isAnimated:
+                    fig = go.Figure()
+                    fig.update_layout(
+                        width=500, 
+                        height=700,
+                        showlegend=False,
+                        )
+                    fig.add_trace(go.Scatter(x=st.session_state['pathplanning_border'][:, 0], y=st.session_state['pathplanning_border'][:, 1], mode='lines', line=dict(color='red', dash='dash')))
+                    for obs in st.session_state['pathplanning_obstacles']:
+                        fig.add_trace(go.Scatter(x=obs[:, 0], y=obs[:, 1], mode='lines', line=dict(color='red')))
+                    loc_nodes = np.array([[node.x, node.y] for node in prm.nodes]).reshape(-1, 2)
+                    fig.add_trace(go.Scatter(x=loc_nodes[:, 0], y=loc_nodes[:, 1], mode='markers', marker=dict(size=7, color='white')))
+                    fig.add_trace(go.Scatter(x=[st.session_state['loc_start'][0]], y=[st.session_state['loc_start'][1]], mode='markers', marker=dict(size=20, color='green')))
+                    fig.add_trace(go.Scatter(x=[st.session_state['loc_end'][0]], y=[st.session_state['loc_end'][1]], mode='markers', marker=dict(size=20, color='blue')))
 
-                        for node in prm.nodes:
-                            if node.neighbours is not None:
-                                for i in range(len(node.neighbours)):
-                                    fig.add_trace(go.Scatter(x=[node.x, node.neighbours[i].x],
-                                                            y=[node.y, node.neighbours[i].y],
-                                                            mode='lines',
-                                                            line=dict(color='white', width=0.5), opacity=.5))
-                        path = np.array(path)
-                        fig.add_trace(go.Scatter(x=path[:, 0], y=path[:, 1], mode='lines', line=dict(color='yellow', width=5)))
-                        st.plotly_chart(fig, use_container_width=True)
+                    for node in prm.nodes:
+                        if node.neighbours is not None:
+                            for i in range(len(node.neighbours)):
+                                fig.add_trace(go.Scatter(x=[node.x, node.neighbours[i].x],
+                                                        y=[node.y, node.neighbours[i].y],
+                                                        mode='lines',
+                                                        line=dict(color='white', width=0.5), opacity=.5))
+                    path = np.array(path)
+                    fig.add_trace(go.Scatter(x=path[:, 0], y=path[:, 1], mode='lines', line=dict(color='yellow', width=5)))
+                    st.plotly_chart(fig, use_container_width=True)
             
 

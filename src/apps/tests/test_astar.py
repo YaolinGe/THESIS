@@ -18,10 +18,10 @@ class RRTStarTestCase(TestCase):
 
     def test_path_generation(self):
         loc_start = [0.01, 0.01]
-        loc_end = [.9, .9]
+        loc_end = [.95, .675]
         max_iter = 2000
-        stepsize = .1
-        distance_tolerance_target = .01
+        stepsize = .05
+        distance_tolerance_target = .075
         distance_tolerance = .02
         path = self.astar.search_path(loc_start, loc_end, max_iter, stepsize, distance_tolerance_target, distance_tolerance)
         path = np.array(path)

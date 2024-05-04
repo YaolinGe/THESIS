@@ -175,16 +175,6 @@ class RRTStar:
 
             ### Plotting section for animation
             if self.animated:
-                # neighbours = []
-                # for node in self.nodes:
-                #     if node.get_parent() is not None:
-                #         loc = node.get_location()
-                #         loc_p = node.get_parent().get_location()
-                #         neighbours.append([loc[0], loc_p[0], loc[1], loc_p[1]])
-                # neighbours = np.array(neighbours)
-                # for n in neighbours:
-                #     fig.add_trace(go.Scatter(x=[n[0], n[1]], y=[n[2], n[3]], mode='lines', line=dict(color='white', width=1)))
-
                 fig.add_trace(go.Scatter(x=[self.new_node.get_location()[0], self.new_node.get_parent().get_location()[0]], 
                                          y=[self.new_node.get_location()[1], self.new_node.get_parent().get_location()[1]], 
                                          mode='lines', line=dict(color='white', width=1)))
