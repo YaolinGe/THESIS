@@ -97,6 +97,14 @@ def renderSensePage():
         st.latex(r"""
             \boldsymbol{\xi} = (\xi_{\boldsymbol{u}_1}, \dots, \xi_{\boldsymbol{u}_n})^T, \hspace{5mm}  \boldsymbol{\xi} \sim N(\boldsymbol{\mu, \Sigma})
             """)
+        st.markdown("""
+                ### Covariance matrix in GRFs: Defines spatial correlations for accurate simulations.
+                """)
+        st.latex(r"""
+            \begin{equation*}
+                \boldsymbol{\Sigma}=\sigma^2 (1+\phi \boldsymbol{h})\exp(-\phi \boldsymbol{h})
+            \end{equation*}
+            """)
         col1, col2 = st.columns(2)
         with col1:
             if isShowPrior:

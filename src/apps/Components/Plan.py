@@ -278,11 +278,11 @@ def renderPlanPage():
             col1, col2 = st.columns(2)
             eibv, ivr = grf.get_ei_field_at_locations(grf.grid)
             with col1: 
-                fig = make_subplot(grf.grid[:, 0], grf.grid[:, 1], eibv, 'EIBV', 'x', 'y', colorscale='RdYlBu', cmin=np.amin(eibv), cmax=np.amax(eibv), width=500, height=550)
+                fig = make_subplot(grf.grid[:, 0], grf.grid[:, 1], eibv, 'EIBV heuristic', 'x', 'y', colorscale='RdYlBu', cmin=np.amin(eibv), cmax=np.amax(eibv), width=500, height=550)
                 st.plotly_chart(fig, use_container_width=True)
             
             with col2:
-                fig = make_subplot(grf.grid[:, 0], grf.grid[:, 1], ivr, 'IVR', 'x', 'y', colorscale='YlOrBr', cmin=np.amin(ivr), cmax=np.amax(ivr), width=500, height=550)
+                fig = make_subplot(grf.grid[:, 0], grf.grid[:, 1], ivr, 'IVR heuristic', 'x', 'y', colorscale='YlOrBr', cmin=np.amin(ivr), cmax=np.amax(ivr), width=500, height=550)
                 st.plotly_chart(fig, use_container_width=True)
 
     elif isPathPlanning:

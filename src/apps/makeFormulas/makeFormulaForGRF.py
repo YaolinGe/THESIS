@@ -4,14 +4,14 @@ def render():
     st.markdown("""
                 # Data Assimilation
                 """)
-    st.markdown("""
-                ### Covariance matrix in GRFs: Defines spatial correlations for accurate simulations.
-                """)
-    st.latex(r"""
-            \begin{equation}
-                \boldsymbol{\Sigma}=\sigma^2 (1+\phi \boldsymbol{h})\exp(-\phi \boldsymbol{h})
-            \end{equation}
-            """)
+    # st.markdown("""
+    #             ### Covariance matrix in GRFs: Defines spatial correlations for accurate simulations.
+    #             """)
+    # st.latex(r"""
+    #         \begin{equation}
+    #             \boldsymbol{\Sigma}=\sigma^2 (1+\phi \boldsymbol{h})\exp(-\phi \boldsymbol{h})
+    #         \end{equation}
+    #         """)
     st.markdown("""
                 ### The measurements at each stage $j=1,\ldots,J$ are modeled by a Gaussian likelihood model 
                 """)
