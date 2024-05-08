@@ -206,7 +206,8 @@ def renderPlanPage():
                         \text{IBV} = \int \text{{EP}}_{\boldsymbol{u}}(1 - \text{{EP}}_{\boldsymbol{u}})d\boldsymbol{u}
                     \end{equation}
                     """)
-            st.markdown("### Expected integrated Bernoulli variance")
+            # st.markdown("### Expected integrated Bernoulli variance]")
+            st.markdown("<h3 style='color: yellow;'>Expected integrated Bernoulli variance</h3>", unsafe_allow_html=True)
             st.latex(r"""
                     \begin{equation}
                         \text{EIBV}(\boldsymbol{D}_j) = \int E_{\boldsymbol{y}_j|\mathcal{Y}_{j-1};\boldsymbol{D}_j} \left[B_{\boldsymbol{u}}(\boldsymbol{y}_j) \right] d\boldsymbol{u}
@@ -217,13 +218,15 @@ def renderPlanPage():
                     B_{\boldsymbol{u}}(\boldsymbol{y}_j) = \text{EP}_{\boldsymbol{u}}(\boldsymbol{y}_j,\boldsymbol{D}_j,\mathcal{Y}_{j-1})(1 - \text{EP}_{\boldsymbol{u}}(\boldsymbol{y}_j,\boldsymbol{D}_j,\mathcal{Y}_{j-1})
                     \end{equation}
                     """)
-            st.markdown("### Integrated variance reduction")
+            # st.markdown("### Integrated variance reduction")
+            st.markdown("<h3 style='color: yellow;'>Integrated variance reduction</h3>", unsafe_allow_html=True)
             st.latex(r"""
                     \begin{equation}
                         \text{IVR}(\boldsymbol{D}_j) = \text{trace}(\boldsymbol{S}_{j-1} \boldsymbol{F}_{\boldsymbol{D}_j}^T (\boldsymbol{F}_{\boldsymbol{D}_j} \boldsymbol{S}_{j-1} \boldsymbol{F}_{\boldsymbol{D}_j}^T + \boldsymbol{R}_j)^{-1} \boldsymbol{F}_{\boldsymbol{D}_j} \boldsymbol{S}_{j-1})
                     \end{equation}
                     """)
-            st.markdown("### Operational constraints")
+            # st.markdown("### Operational constraints")
+            st.markdown("<h3 style='color: yellow;'>Operational constraints</h3>", unsafe_allow_html=True)
             st.markdown("(time left, distance traveled, collision risk etc.)")
             st.latex(r"""
                     \begin{equation}
