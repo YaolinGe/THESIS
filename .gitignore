@@ -40,27 +40,28 @@ __pycache__/
 **/*.npy
 **/**.npy
 
-**.html
-*.html
-**/*.html
-**/**.html
-!phd.html
-!index.html
+# **.html
+# *.html
+# **/*.html
+# **/**.html
+# !phd.html
+# !index.html
 
-**.jpg
-*.jpg
-**/*.jpg
-**/**.jpg
+# **.jpg
+# *.jpg
+# **/*.jpg
+# **/**.jpg
 
-**.png
-*.png
-**/*.png
-**/**.png
-!/assets/images/
+# **.png
+# *.png
+# **/*.png
+# **/**.png
+# !/assets/images/**/*/
+**/examples/
 
-/assets/**/*.jpeg
-/assets/**/*.jpg
-/assets/**/*.png
+# /assets/**/*.jpeg
+# /assets/**/*.jpg
+# /assets/**/*.png
 /assets/**/*.mp4
 /assets/**/*.avi
 /assets/**/*.mov
@@ -68,6 +69,14 @@ __pycache__/
 /assets/**/*.flv
 /assets/**/*.wmv
 /assets/**/*.gif
-assets/
-/assets/
-
+# assets/
+# /assets/
+**/*.mp4
+**/*.avi
+**/*.mov
+**/*.mkv
+**/*.flv
+**/*.wmv
+**/*.gif
+/assets/videos/
+**/assets/videos/
