@@ -5,6 +5,10 @@ __pycache__/
 **/.idea
 **/.ipynb_checkpoints/
 **.zip
+*.gitignore
+**.gitignore
+**/**.gitignore
+
 
 **.nc
 *.nc
