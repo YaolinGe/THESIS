@@ -40,6 +40,7 @@ __pycache__/
 *.html
 **/*.html
 **/**.html
+!phd.html
 
 **.jpg
 *.jpg
@@ -63,3 +64,4 @@ __pycache__/
 /assets/**/*.gif
 assets/
 /assets/
+

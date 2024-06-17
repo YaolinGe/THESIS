@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=1024" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <title>Ph.D. Thesis Presentation</title>
+
+    <meta name="description" content="Ph.D. thesis presentation" />
+    <meta name="author" content="Yaolin Ge" />
+
+    <!-- <link
+        href="//fonts.googleapis.com/css?family=Open+Sans:regular,semibold,italic,italicsemibold|PT+Sans:400,700,400italic,700italic|PT+Serif:400,700,400italic,700italic"
+        rel="stylesheet" /> -->
+    <link href="css/impress-demo.css" rel="stylesheet" />
+    <link href="css/impress-common.css" rel="stylesheet" />
+    <link href="css/user_defined.css" rel="stylesheet" />
+</head>
+
+<body class="impress-not-supported">
+    <div class="fallback-message">
+        <p>Your browser <b>doesn't support the features required</b> by impress.js, so you are presented with a
+            simplified version of this presentation.</p>
+        <p>For the best experience please use the latest <b>Chrome</b>, <b>Safari</b> or <b>Firefox</b> browser.</p>
+    </div>
+
+    <div id="impress" data-transition-duration="1000" data-width="1400" data-height="840" data-max-scale="3"
+        data-min-scale="0" data-perspective="1000" data-autoplay="10000">
+
+        <!-- <div id="front-page" class="step" data-x="0" data-y="0" data-z="0" data-scale="1" style="width: 100vw; padding: 0; ">
+            <div class="front-page">
+                <img src="assets/images/logo.png" class="front-page-logo" />
+                <p class="front-page-title">WGSS seminar 2024</p>
+                <p class="front-page-subtitle">Adaptive Sampling of River Plume Fronts: Integrating Statistical Modeling
+                    and Autonomous Path Planning for Enhanced Oceanographic Exploration.</p>
+                <div class="front-page-supplementary-info">
+                    <p class="candidate">Presenter: Yaolin Ge</p>
+                    <p class="supervisors">Supervisors: Prof. Jo Eidsvik, Prof. Geir-Arne Fuglstad</p>
+                    <p class="department">Department of Mathematical Sciences</p>
+                    <p class="faculty">Faculty of Information Technology and Electrical Engineering</p>
+                </div>
+            </div>
+        </div> -->
+
+        <div id="front-page" class="step" data-x="0" data-y="0" data-z="0" data-scale="1" style="width: 100vw; padding: 0; ">
+            <div class="front-page">
+                <img src="assets/images/logo.png" class="front-page-logo" />
+                <p class="front-page-title">Doctoral Thesis Defense</p>
+                <p class="front-page-subtitle">Adaptive Sampling of River Plume Fronts: Integrating Statistical Modeling
+                    and Autonomous Path Planning for Enhanced Oceanographic Exploration.</p>
+                <div class="front-page-supplementary-info">
+                    <p class="candidate">Candidate: Yaolin Ge</p>
+                    <p class="supervisors">Supervisors: Prof. Jo Eidsvik, Prof. Geir-Arne Fuglstad</p>
+                    <p class="date">Date of the defense: 2024-05-08</p>
+                    <p class="department">Department of Mathematical Sciences</p>
+                    <p class="faculty">Faculty of Information Technology and Electrical Engineering</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- <div>TODO: Add a disclaimer page to clarify that I am not an expert in anything, and there will be mistakes!</div> -->
+        <!-- <div id="disclaimer" class="step" data-x="0" data-y="0" data-z="0" data-scale="1" style="width: 100vw; padding: 0; ">
+            <div class="disclaimer">
+                <p class="disclaimer-title">Disclaimer</p>
+            </div>  
+        </div> -->
+
+        <div id="earth-starter" class="step" data-x="0" data-y="0" data-scale="1" style="padding: 0; width: 100vw; height:100vh;">
+            <video id="earth-video" width="100%" height="100%" controls muted autoplay style="object-fit: cover;">
+                <source src="assets/videos/earthstudio/earth.mp4" type="video/mp4">
+            </video>
+        </div>
+
+        <div id="earth-background" class="step" data-x="0" data-y="0" data-scale="1" style="padding: 0; width: 100vw; height:100vh;">
+            <img src="assets/images/earth_dessert.jpeg" style="width:100%; height: 100%; padding: 0; object-fit: cover; ">
+        </div>
+        <!-- TODO: Add the move to be in and out so it will be a nice and smooth transition -->
+
+        <div id="ocean" class="step earth" data-x="0" data-y="0" data-z="1000" data-transition-duration="1000" data-scale="1" 
+        style="padding: 0; width: 100vw; height:100vh; opacity: .7;">  <!--TODO: check a method to update this opacity so that it will be updated when this page is not active-->
+            <div
+                style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); border-radius: 50%; width: 25vw; height: 25vw; overflow: hidden;">
+                <img src="assets/images/earth.jpeg"
+                    style="width: 51vw; height: auto; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+            </div>
+        </div>
+
+        <div id="ocean-importance-ac" class="step" data-x="750" data-y="0" data-z="1000" data-scale="1" data-transition-duration="1000"
+            style="padding: 0; width: 100vw; height:100vh; display: flex; flex-direction: row; align-items: center; ">
+            
+            <div style="width: 35vw; height: 35vw; margin: 0 5rem 0 20rem; border-radius: 50%; overflow: hidden">
+                <img src="assets/images/ocean/ac.webp" style="width: 100%; height: 100%; padding: 0; object-fit: cover;">
+            </div>
+            <p style="font-family: Arial, sans-serif; font-size:60px; font-weight: bold; ">Heat reservoir</p>
+            <p style="position: absolute; bottom: 2.5rem; right: 1.5rem; width: 20vw; height: auto; color: black; font-family: Arial, Helvetica, sans-serif; font-size: 20px;">Image generated by ChatGPT</p>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="ocean-importance-species" class="step" data-x="375" data-y="650" data-z="1000" data-rotate="60" data-scale="1" data-transition-duration="1000"
+            style="padding: 0; width: 100vw; height:100vh; display: flex; flex-direction: row; align-items: center; ">
+            
+            <div style="width: 35vw; height: 35vw; margin: 0 5rem 0 20rem; border-radius: 50%; overflow: hidden">
+                <img src="assets/images/ocean/species.webp" style="width: 100%; height: 100%; padding: 0; object-fit: cover;">
+            </div>
+            <p style="font-family: Arial, sans-serif; font-size:60px; font-weight: bold; ">Biodiversity</p>
+            <p style="position: absolute; bottom: 2.5rem; right: 1.5rem; width: 20vw; height: auto; color: black; font-family: Arial, Helvetica, sans-serif; font-size: 20px;">Image generated by ChatGPT</p>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="ocean-importance-vaccum-cleaner" class="step" data-x="-375" data-y="650" data-z="1000" data-rotate="120" data-scale="1" data-transition-duration="1000"
+            style="padding: 0; width: 100vw; height:100vh; display: flex; flex-direction: row; align-items: center; ">
+            
+            <div style="width: 35vw; height: 35vw; margin: 0 5rem 0 20rem; border-radius: 50%; overflow: hidden">
+                <img src="assets/images/ocean/vaccum_cleaner.webp" style="width: 100%; height: 100%; padding: 0; object-fit: cover;">
+            </div>
+            <p style="font-family: Arial, sans-serif; font-size:60px; font-weight: bold; ">Carbon sink</p>
+            <p style="position: absolute; bottom: 2.5rem; right: 1.5rem; width: 20vw; height: auto; color: black; font-family: Arial, Helvetica, sans-serif; font-size: 20px;">Image generated by ChatGPT</p>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="ocean-importance-oxygen" class="step" data-x="-750" data-y="0" data-z="1000" data-rotate="180" data-scale="1" data-transition-duration="1000"
+            style="padding: 0; width: 100vw; height:100vh; display: flex; flex-direction: row; align-items: center; ">
+            
+            <div style="width: 35vw; height: 35vw; margin: 0 5rem 0 20rem; border-radius: 50%; overflow: hidden">
+                <img src="assets/images/ocean/oxygen.webp" style="width: 100%; height: 100%; padding: 0; object-fit: cover;">
+            </div>
+            <p style="font-family: Arial, sans-serif; font-size:60px; font-weight: bold; ">Life support</p>
+            <p style="position: absolute; bottom: 2.5rem; right: 1.5rem; width: 20vw; height: auto; color: black; font-family: Arial, Helvetica, sans-serif; font-size: 20px;">Image generated by ChatGPT</p>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="ocean-importance-fishing" class="step" data-x="-375" data-y="-650" data-z="1000" data-rotate="240" data-scale="1" data-transition-duration="1000"
+            style="padding: 0; width: 100vw; height:100vh; display: flex; flex-direction: row; align-items: center; ">
+            
+            <div style="width: 35vw; height: 35vw; margin: 0 5rem 0 20rem; border-radius: 50%; overflow: hidden">
+                <img src="assets/images/ocean/fishing.webp" style="width: 100%; height: 100%; padding: 0; object-fit: cover;">
+            </div>
+            <p style="font-family: Arial, sans-serif; font-size:60px; font-weight: bold; ">Food source</p>
+            <p style="position: absolute; bottom: 2.5rem; right: 1.5rem; width: 20vw; height: auto; color: black; font-family: Arial, Helvetica, sans-serif; font-size: 20px;">Image generated by ChatGPT</p>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="ocean-importance-maritime-transport" class="step" data-x="375" data-y="-650" data-z="1000" data-rotate="300" data-scale="1" data-transition-duration="1000"
+            style="padding: 0; width: 100vw; height:100vh; display: flex; flex-direction: row; align-items: center; ">
+            
+            <div style="width: 35vw; height: 35vw; margin: 0 5rem 0 20rem; border-radius: 50%; overflow: hidden">
+                <img src="assets/images/ocean/maritime_transport.webp" style="width: 100%; height: 100%; padding: 0; object-fit: cover;">
+            </div>
+            <p style="font-family: Arial, sans-serif; font-size:60px; font-weight: bold; ">Transportation</p>
+            <p style="position: absolute; bottom: 2.5rem; right: 1.5rem; width: 20vw; height: auto; color: black; font-family: Arial, Helvetica, sans-serif; font-size: 20px;">Image generated by ChatGPT</p>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="ocean-importance-surface" class="step" data-x="750" data-y="0" data-z="1000" data-rotate="360" data-scale="1" data-transition-duration="1000"
+            style="padding: 0; width: 100vw; height:100vh; display: flex; flex-direction: row; align-items: center; ">
+            
+            <div style="width: 35vw; height: 35vw; margin: 0 5rem 0 20rem; border-radius: 50%; overflow: hidden">
+                <img src="assets/images/ocean/surface.webp" style="width: 100%; height: 100%; padding: 0; object-fit: cover;">
+            </div>
+            <p style="font-family: Arial, sans-serif; font-size:60px; font-weight: bold; ">Primary production</p>
+            <p style="position: absolute; bottom: 2.5rem; right: 1.5rem; width: 20vw; height: auto; color: black; font-family: Arial, Helvetica, sans-serif; font-size: 20px;">Image generated by ChatGPT</p>
+
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+        
+        <!-- TODO: add references to each item and also perhaps add texts to those images  -->
+        <div id="ocean-importance-summary" class="step earth" data-x="0" data-y="0" data-z="1000" data-rotate="360" data-transition-duration="1000" data-scale="1" 
+        style="padding: 0; width: 100vw; height:100vh;">
+            <div
+                style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); border-radius: 50%; width: 25vw; height: 25vw; overflow: hidden;">
+                <img src="assets/images/earth.jpeg"
+                    style="width: 51vw; height: auto; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+            </div>
+
+            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(0deg) translate(25rem) rotate(0deg); border-radius: 50%; width: 15vw; height: 15vw; overflow: hidden">
+                <img src="assets/images/ocean/ac.webp" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+
+            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(60deg) translate(25rem) rotate(-60deg); border-radius: 50%; width: 15vw; height: 15vw; overflow: hidden">
+                <img src="assets/images/ocean/species.webp" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>  
+            
+            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(120deg) translate(25rem) rotate(-120deg); border-radius: 50%; width: 15vw; height: 15vw; overflow: hidden">
+                <img src="assets/images/ocean/vaccum_cleaner.webp" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+
+            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(180deg) translate(25rem) rotate(-180deg); border-radius: 50%; width: 15vw; height: 15vw; overflow: hidden">
+                <img src="assets/images/ocean/oxygen.webp" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+
+            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(240deg) translate(25rem) rotate(-240deg); border-radius: 50%; width: 15vw; height: 15vw; overflow: hidden">
+                <img src="assets/images/ocean/fishing.webp" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+
+            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(300deg) translate(25rem) rotate(-300deg); border-radius: 50%; width: 15vw; height: 15vw; overflow: hidden">
+                <img src="assets/images/ocean/maritime_transport.webp" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+            <p style="position: absolute; bottom: 2.5rem; right: 1.5rem; width: 20vw; height: auto; color: black; font-family: Arial, Helvetica, sans-serif; font-size: 20px;">Images generated by ChatGPT</p>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto; z-index: -1;">
+        </div>
+
+        <div id="ocean-sampling-current-status" class="step" data-x="0" data-y="0" data-z="1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: black;">
+            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); border-radius: 50%; width: 5vw; height: 5vw; background-color: white;">
+                <p style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-family: Arial, sans-serif; font-weight: bold; font-size:30pt;">5%</p>
+            </div>
+            <p style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 100vw; height: auto; color: white; font-family: Arial, Helvetica, sans-serif; font-size: 20px;">Source: National Oceanic and Atmospheric Administration (NOAA) 2023</p>
+        </div>
+
+        <div id="Q-Objective" class="step" data-x="0" data-y="0" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center;">
+            <div style="display: flex; flex-direction: row; align-items: center; font-family: Arial, Helvetica, sans-serif; ">
+                <p>What do we want to sample?</p>
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="ocean-front-drone" class="step" data-x="0" data-y="0" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh;">
+            <video width="100%" height="100%" controls autoplay muted playsinline style="object-fit: cover;">
+                <source src="assets/videos/droneTracking.mp4" type="video/mp4">
+            </video>
+        </div>
+
+        <div id="river-plume-from-boat" class="step" data-x="0" data-y="0" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh;">
+            <video width="100%" height="100%" controls autoplay muted playsinline style="object-fit: cover;">
+                <source src="assets/videos/riverPlumeFromBoat.mp4" type="video/mp4">
+            </video>
+        </div>
+
+        <div id="Q-traditional-method" class="step" data-x="0" data-y="0" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center;">
+            <div style="display: flex; flex-direction: row; align-items: center; font-family: Arial, Helvetica, sans-serif; ">
+                <p>What tools can we use to measure the field of interest in our ocean?</p>
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="traditional-method-1" class="step" data-x="0" data-y="0" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center;">
+            <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 3rem; font-family: Arial, sans-serif; font-size: 60px;">
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 2rem;">
+                    <div style="border-radius: 50%; width: 20vw; height: 20vw; overflow: hidden">
+                        <img src="assets/images/traditionalMethods/shipSurvey.webp" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <p style="font-weight: bold; font-size: 40px; color: rgb(119, 119, 119);">Ship survey</p>
+                    <p style="opacity: 0;">🤑</p>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 2rem; opacity: .1;">
+                    <div style="border-radius: 50%; width: 20vw; height: 20vw; overflow: hidden">
+                        <img src="assets/images/traditionalMethods/satelliteImage.webp" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <p style="font-weight: bold; font-size: 40px; color: rgb(119, 119, 119); display: none;">Satellite image</p>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 2rem; opacity: .1;">
+                    <div style="border-radius: 50%; width: 20vw; height: 20vw; overflow: hidden">
+                        <img src="assets/images/traditionalMethods/staticBuoy.webp" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <p style="font-weight: bold; font-size: 40px; color: rgb(119, 119, 119); display: none;">Static buoy</p>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 2rem; opacity: .1;">
+                    <div style="border-radius: 50%; width: 20vw; height: 20vw; overflow: hidden">
+                        <img src="assets/images/traditionalMethods/dynamicDrifter.webp" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <p style="font-weight: bold; font-size: 40px; color: rgb(119, 119, 119); display: none;">Dynamic drifter</p>
+                </div>
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+
+        <div id="traditional-method-1-1" class="step" data-x="0" data-y="0" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center;">
+            <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 3rem; font-family: Arial, sans-serif; font-size: 60px;">
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 2rem;">
+                    <div style="border-radius: 50%; width: 20vw; height: 20vw; overflow: hidden">
+                        <img src="assets/images/traditionalMethods/shipSurvey.webp" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <p style="font-weight: bold; font-size: 40px; color: rgb(119, 119, 119);">Ship survey</p>
+                    <p>🤑</p>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 2rem; opacity: .1;">
+                    <div style="border-radius: 50%; width: 20vw; height: 20vw; overflow: hidden">
+                        <img src="assets/images/traditionalMethods/satelliteImage.webp" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <p style="font-weight: bold; font-size: 40px; color: rgb(119, 119, 119); display: none;">Satellite image</p>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 2rem; opacity: .1;">
+                    <div style="border-radius: 50%; width: 20vw; height: 20vw; overflow: hidden">
+                        <img src="assets/images/traditionalMethods/staticBuoy.webp" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <p style="font-weight: bold; font-size: 40px; color: rgb(119, 119, 119); display: none;">Static buoy</p>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 2rem; opacity: .1;">
+                    <div style="border-radius: 50%; width: 20vw; height: 20vw; overflow: hidden">
+                        <img src="assets/images/traditionalMethods/dynamicDrifter.webp" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <p style="font-weight: bold; font-size: 40px; color: rgb(119, 119, 119); display: none;">Dynamic drifter</p>
+                </div>
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="traditional-method-2" class="step" data-x="0" data-y="0" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center;">
+            <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 3rem; font-family: Arial, sans-serif; font-size: 60px;">
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 2rem; opacity: .3;">
+                    <div style="border-radius: 50%; width: 20vw; height: 20vw; overflow: hidden">
+                        <img src="assets/images/traditionalMethods/shipSurvey.webp" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <p style="font-weight: bold; font-size: 40px; color: rgb(119, 119, 119);">Ship survey</p>
+                    <p>🤑</p>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 2rem;">
+                    <div style="border-radius: 50%; width: 20vw; height: 20vw; overflow: hidden">
+                        <img src="assets/images/traditionalMethods/satelliteImage.webp" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <p style="font-weight: bold; font-size: 40px; color: rgb(119, 119, 119);">Satellite image</p>
+                    <p style="opacity: 0;">😶‍🌫️</p>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 2rem; opacity: .1;">
+                    <div style="border-radius: 50%; width: 20vw; height: 20vw; overflow: hidden">
+                        <img src="assets/images/traditionalMethods/staticBuoy.webp" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <p style="font-weight: bold; font-size: 40px; color: rgb(119, 119, 119); display: none;">Static buoy</p>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 2rem; opacity: .1;">
+                    <div style="border-radius: 50%; width: 20vw; height: 20vw; overflow: hidden">
+                        <img src="assets/images/traditionalMethods/dynamicDrifter.webp" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <p style="font-weight: bold; font-size: 40px; color: rgb(119, 119, 119); display: none;">Dynamic drifter</p>
+                </div>
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="traditional-method-2-2" class="step" data-x="0" data-y="0" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center;">
+            <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 3rem; font-family: Arial, sans-serif; font-size: 60px;">
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 2rem; opacity: .3;">
+                    <div style="border-radius: 50%; width: 20vw; height: 20vw; overflow: hidden">
+                        <img src="assets/images/traditionalMethods/shipSurvey.webp" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <p style="font-weight: bold; font-size: 40px; color: rgb(119, 119, 119);">Ship survey</p>
+                    <p>🤑</p>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 2rem;">
+                    <div style="border-radius: 50%; width: 20vw; height: 20vw; overflow: hidden">
+                        <img src="assets/images/traditionalMethods/satelliteImage.webp" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <p style="font-weight: bold; font-size: 40px; color: rgb(119, 119, 119);">Satellite image</p>
+                    <p>😶‍🌫️</p>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 2rem; opacity: .1;">
+                    <div style="border-radius: 50%; width: 20vw; height: 20vw; overflow: hidden">
+                        <img src="assets/images/traditionalMethods/staticBuoy.webp" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <p style="font-weight: bold; font-size: 40px; color: rgb(119, 119, 119); display: none;">Static buoy</p>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 2rem; opacity: .1;">
+                    <div style="border-radius: 50%; width: 20vw; height: 20vw; overflow: hidden">
+                        <img src="assets/images/traditionalMethods/dynamicDrifter.webp" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <p style="font-weight: bold; font-size: 40px; color: rgb(119, 119, 119); display: none;">Dynamic drifter</p>
+                </div>
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="traditional-method-3" class="step" data-x="0" data-y="0" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center;">
+            <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 3rem; font-family: Arial, sans-serif; font-size: 60px;">
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 2rem; opacity: .3;">
+                    <div style="border-radius: 50%; width: 20vw; height: 20vw; overflow: hidden">
+                        <img src="assets/images/traditionalMethods/shipSurvey.webp" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <p style="font-weight: bold; font-size: 40px; color: rgb(119, 119, 119);">Ship survey</p>
+                    <p>🤑</p>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 2rem; opacity: .3">
+                    <div style="border-radius: 50%; width: 20vw; height: 20vw; overflow: hidden">
+                        <img src="assets/images/traditionalMethods/satelliteImage.webp" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <p style="font-weight: bold; font-size: 40px; color: rgb(119, 119, 119);">Satellite image</p>
+                    <p>😶‍🌫️</p>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 2rem;">
+                    <div style="border-radius: 50%; width: 20vw; height: 20vw; overflow: hidden">
+                        <img src="assets/images/traditionalMethods/staticBuoy.webp" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <p style="font-weight: bold; font-size: 40px; color: rgb(119, 119, 119);">Static buoy</p>
+                    <p style="opacity: 0;">🤷‍♂️</p>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 2rem; opacity: .1;">
+                    <div style="border-radius: 50%; width: 20vw; height: 20vw; overflow: hidden">
+                        <img src="assets/images/traditionalMethods/dynamicDrifter.webp" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <p style="font-weight: bold; font-size: 40px; color: rgb(119, 119, 119); display: none;">Dynamic drifter</p>
+                </div>
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="traditional-method-3-2" class="step" data-x="0" data-y="0" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center;">
+            <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 3rem; font-family: Arial, sans-serif; font-size: 60px;">
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 2rem; opacity: .3;">
+                    <div style="border-radius: 50%; width: 20vw; height: 20vw; overflow: hidden">
+                        <img src="assets/images/traditionalMethods/shipSurvey.webp" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <p style="font-weight: bold; font-size: 40px; color: rgb(119, 119, 119);">Ship survey</p>
+                    <p>🤑</p>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 2rem; opacity: .3;">
+                    <div style="border-radius: 50%; width: 20vw; height: 20vw; overflow: hidden">
+                        <img src="assets/images/traditionalMethods/satelliteImage.webp" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <p style="font-weight: bold; font-size: 40px; color: rgb(119, 119, 119);">Satellite image</p>
+                    <p>😶‍🌫️</p>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 2rem;">
+                    <div style="border-radius: 50%; width: 20vw; height: 20vw; overflow: hidden">
+                        <img src="assets/images/traditionalMethods/staticBuoy.webp" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <p style="font-weight: bold; font-size: 40px; color: rgb(119, 119, 119);">Static buoy</p>
+                    <p>🤷‍♂️</p>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 2rem; opacity: .1;">
+                    <div style="border-radius: 50%; width: 20vw; height: 20vw; overflow: hidden">
+                        <img src="assets/images/traditionalMethods/dynamicDrifter.webp" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <p style="font-weight: bold; font-size: 40px; color: rgb(119, 119, 119); display: none;">Dynamic drifter</p>
+                </div>
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="traditional-method-4" class="step" data-x="0" data-y="0" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center;">
+            <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 3rem; font-family: Arial, sans-serif; font-size: 60px;">
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 2rem; opacity: .3;">
+                    <div style="border-radius: 50%; width: 20vw; height: 20vw; overflow: hidden">
+                        <img src="assets/images/traditionalMethods/shipSurvey.webp" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <p style="font-weight: bold; font-size: 40px; color: rgb(119, 119, 119);">Ship survey</p>
+                    <p>🤑</p>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 2rem; opacity: .3">
+                    <div style="border-radius: 50%; width: 20vw; height: 20vw; overflow: hidden">
+                        <img src="assets/images/traditionalMethods/satelliteImage.webp" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <p style="font-weight: bold; font-size: 40px; color: rgb(119, 119, 119);">Satellite image</p>
+                    <p>😶‍🌫️</p>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 2rem; opacity: .3;">
+                    <div style="border-radius: 50%; width: 20vw; height: 20vw; overflow: hidden">
+                        <img src="assets/images/traditionalMethods/staticBuoy.webp" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <p style="font-weight: bold; font-size: 40px; color: rgb(119, 119, 119);">Static buoy</p>
+                    <p>🤷‍♂️</p>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 2rem;">
+                    <div style="border-radius: 50%; width: 20vw; height: 20vw; overflow: hidden">
+                        <img src="assets/images/traditionalMethods/dynamicDrifter.webp" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <p style="font-weight: bold; font-size: 40px; color: rgb(119, 119, 119);">Dynamic drifter</p>
+                    <p style="opacity: 0;">🤔</p>
+                </div>
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="traditional-method-4" class="step" data-x="0" data-y="0" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center;">
+            <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 3rem; font-family: Arial, sans-serif; font-size: 60px;">
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 2rem; opacity: .3;">
+                    <div style="border-radius: 50%; width: 20vw; height: 20vw; overflow: hidden">
+                        <img src="assets/images/traditionalMethods/shipSurvey.webp" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <p style="font-weight: bold; font-size: 40px; color: rgb(119, 119, 119);">Ship survey</p>
+                    <p>🤑</p>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 2rem; opacity: .3">
+                    <div style="border-radius: 50%; width: 20vw; height: 20vw; overflow: hidden">
+                        <img src="assets/images/traditionalMethods/satelliteImage.webp" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <p style="font-weight: bold; font-size: 40px; color: rgb(119, 119, 119);">Satellite image</p>
+                    <p>😶‍🌫️</p>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 2rem; opacity: .3;">
+                    <div style="border-radius: 50%; width: 20vw; height: 20vw; overflow: hidden">
+                        <img src="assets/images/traditionalMethods/staticBuoy.webp" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <p style="font-weight: bold; font-size: 40px; color: rgb(119, 119, 119);">Static buoy</p>
+                    <p>🤷‍♂️</p>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 2rem;">
+                    <div style="border-radius: 50%; width: 20vw; height: 20vw; overflow: hidden">
+                        <img src="assets/images/traditionalMethods/dynamicDrifter.webp" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <p style="font-weight: bold; font-size: 40px; color: rgb(119, 119, 119);">Dynamic drifter</p>
+                    <p>🤔</p>
+                </div>
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="Q-AUV" class="step" data-x="0" data-y="0" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center;">
+            <div style="display: flex; flex-direction: row; align-items: center; font-family: Arial, Helvetica, sans-serif; ">
+                <p>Are there any cost-effective, weather-proof, autonomous tools?</p>
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="LAUV" class="step" data-x="0" data-y="0" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh;">
+            <video width="100%" height="100%" controls autoplay muted playsinline style="object-fit: cover;">
+                <source src="assets/videos/AUV.mp4" type="video/mp4">
+            </video>
+            <!-- <p style="position: absolute; bottom: 2.5rem; right: 1.5rem; width: 20vw; height: auto; color: black; font-family: Arial, Helvetica, sans-serif; font-size: 20px; z-index: 1">Source: OceanScan</p> -->
+        </div>
+        
+        <div id="Q-ASS" class="step" data-x="0" data-y="0" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center;">
+            <div style="display: flex; flex-direction: row; align-items: center; font-family: Arial, Helvetica, sans-serif; ">
+                <p>But, when and where should I sample? </p>
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+                
+        <div id="ASS-Intro" class="step" data-x="0" data-y="0" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center;">
+            <div style="display: flex; flex-direction: row; align-items: center; font-family: Arial, Helvetica, sans-serif; ">
+                <p>Adaptive Sampling System</p>
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+                
+        <div id="ASS-Intro-2" class="step" data-x="0" data-y="0" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center;">
+            <div style="display: flex; flex-direction: row; align-items: center; font-family: Arial, Helvetica, sans-serif; ">
+                <p><span style="color: red; font-size:200px;">A</span>daptive <span style="color: red; font-size:200px;">S</span>ampling <span style="color: red; font-size:200px;">S</span>ystem</p>
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="Sense-Plan-Act" class="step" data-x="0" data-y="0" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; flex-direction: column; justify-content: start; align-items: center; gap: 8rem; ">
+            <p style="font-family: Arial, Helvetica, sans-serif; font-size: 60px; color:rgb(119, 119, 119); margin-top: 5rem;">ASS Anatomy</p> 
+            <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 3rem; font-family: Arial, sans-serif; font-size: 60px;">
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 2rem;">
+                    <p style="font-weight: bold; font-size: 40px; color: rgb(119, 119, 119);">Sense</p>
+                    <div style="border-radius: 50%; width: 20vw; height: 20vw; overflow: hidden">
+                        <img src="assets/images/sensePlanAct/sense.webp" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 2rem;">
+                    <p style="font-weight: bold; font-size: 40px; color: rgb(119, 119, 119);">Plan</p>
+                    <div style="border-radius: 50%; width: 20vw; height: 20vw; overflow: hidden">
+                        <img src="assets/images/sensePlanAct/plan.webp" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 2rem;">
+                    <p style="font-weight: bold; font-size: 40px; color: rgb(119, 119, 119);">Act</p>
+                    <div style="border-radius: 50%; width: 20vw; height: 20vw; overflow: hidden">
+                        <img src="assets/images/sensePlanAct/act.webp" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                </div>
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;"> 
+        </div>
+
+        <div id="MathDemoIntro" class="step" data-x="0" data-y="0" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center;">
+            <div style="display: flex; flex-direction: row; align-items: center; font-family: Arial, Helvetica, sans-serif; ">
+                <p>Now, let's dive into some math!</p>
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="Sense" class="step" data-x="0" data-y="0" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center;">
+            <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 5rem; padding: 10rem; font-family: Arial, Helvetica, sans-serif;">
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 2rem;">
+                    <p style="font-weight: bold; font-size: 40px; color: rgb(119, 119, 119);">Sense</p>
+                    <div style="border-radius: 50%; width: 20vw; height: 20vw; overflow: hidden">
+                        <img src="assets/images/sensePlanAct/sense.webp" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                </div>
+                <p>What is a GRF? Why is it useful?</p>
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="Demo-I" class="step" data-x="0" data-y="0" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center;">
+            <div style="display: flex; flex-direction: row; align-items: center; font-family: Arial, Helvetica, sans-serif; ">
+                <!-- <iframe src="http://localhost:8501/" height="500px" width="600px" name="DemoI" allow="fullscreen" referrerpolicy="no-referrer" sandbox="allow-same-origin allow-scripts" loading="lazy"></iframe> -->
+                <p>Demo I</p>
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="Plan" class="step" data-x="0" data-y="0" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center;">
+            <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 5rem; padding: 10rem; font-family: Arial, Helvetica, sans-serif;">
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 2rem;">
+                    <p style="font-weight: bold; font-size: 40px; color: rgb(119, 119, 119);">Plan</p>
+                    <div style="border-radius: 50%; width: 20vw; height: 20vw; overflow: hidden">
+                        <img src="assets/images/sensePlanAct/plan.webp" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                </div>
+                <p>Boundary classifier? Planning metrics? A good path? </p>
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="Demo-II" class="step" data-x="0" data-y="0" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center;">
+            <div style="display: flex; flex-direction: row; align-items: center; font-family: Arial, Helvetica, sans-serif; ">
+                <p>Demo II</p>
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="Act" class="step" data-x="0" data-y="0" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center;">
+            <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 5rem; padding: 10rem; font-family: Arial, Helvetica, sans-serif;">
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 2rem;">
+                    <p style="font-weight: bold; font-size: 40px; color: rgb(119, 119, 119);">Act</p>
+                    <div style="border-radius: 50%; width: 20vw; height: 20vw; overflow: hidden">
+                        <img src="assets/images/sensePlanAct/act.webp" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                </div>
+                <p>How to execute?</p>
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="Act-illustration" class="step" data-x="0" data-y="0" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center;">
+            <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 5rem; padding: 10rem; font-family: Arial, Helvetica, sans-serif;">
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 2rem;">
+                    <div style="border-radius: 50%; width: 30vw; height: 30vw; overflow: hidden">
+                        <img src="assets/images/sensePlanAct/act_illustration2.webp" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                </div>
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 2rem;">
+                    <div>
+                        <img src="assets/images/sensePlanAct/ros_imc_bridge.png" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                </div>
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+        
+        <div id="TestAndValidation" class="step" data-x="0" data-y="0" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center;">
+            <div style="display: flex; flex-direction: row; align-items: center; font-family: Arial, Helvetica, sans-serif; ">
+                <p>How do we actually know if our ASS is good?</p>
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="Simulation" class="step" data-x="0" data-y="0" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center;">
+            <div style="display: flex; flex-direction: row; align-items: center; font-family: Arial, Helvetica, sans-serif; ">
+                <p>Simulation</p>
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="Simulation-mafia" class="step" data-x="0" data-y="0" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh;">
+            <video width="100%" height="100%" controls autoplay muted playsinline style="object-fit: cover; z-index: 0;">
+                <source src="assets/videos/simulation/mafia.mp4" type="video/mp4">
+            </video>
+            <p style="z-index: 1; position: absolute; bottom: 2.5rem; left: 40%; font-family: Arial, Helvetica, sans-serif; font-size: 50px; color: rgb(119, 119, 119)">GMRF Myopic 3D Simulation</p>
+        </div>
+
+        <div id="Simulation-taichi" class="step" data-x="0" data-y="0" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh;">
+            <video width="100%" height="100%" controls autoplay muted playsinline style="object-fit: cover;">
+                <source src="assets/videos/simulation/taichi.mp4" type="video/mp4">
+            </video>
+            <p style="z-index: 1; position: absolute; bottom: 2.5rem; left: 40%; font-family: Arial, Helvetica, sans-serif; font-size: 50px; color: rgb(119, 119, 119)">GRF Myopic 3D Two AUVs simulation</p>
+        </div>
+
+        <div id="Simulation-rrt" class="step" data-x="0" data-y="0" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; display: flex; flex-direction: column; justify-content: center; background-color: white;">
+            <video width="100%" controls autoplay muted playsinline style="object-fit: cover;">
+                <source src="assets/videos/simulation/rrt.mp4" type="video/mp4">
+            </video>
+            <p style="z-index: 1; position: absolute; bottom: 2.5rem; left: 40%; font-family: Arial, Helvetica, sans-serif; font-size: 50px; color: rgb(119, 119, 119)">GRF AR1 Long-horizon simulation</p>
+        </div>
+
+        <div id="Simulation-stuck" class="step" data-x="0" data-y="0" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh;  display: flex; flex-direction: column; justify-content: center; background-color: white;">
+            <video width="100%" controls autoplay muted playsinline style="object-fit: cover;">
+                <source src="assets/videos/simulation/stuck.mp4" type="video/mp4">
+            </video>
+            <p style="z-index: 1; position: absolute; bottom: 2.5rem; left: 35%; font-family: Arial, Helvetica, sans-serif; font-size: 50px; color: rgb(119, 119, 119)">Help! An AUV got stuck.</p>
+        </div>
+        
+        <div id="Experiment" class="step" data-x="0" data-y="0" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center;">
+            <div style="display: flex; flex-direction: row; align-items: center; font-family: Arial, Helvetica, sans-serif; ">
+                <p>Experiment (FieldTrip.mp4)</p>
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="Experiment-TimeLine" class="step" data-x="0" data-y="0" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center;">
+            <div style="display: flex; flex-direction: row; align-items: center; font-family: Arial, Helvetica, sans-serif; ">
+                <img src="assets/images/timeline.png" style="width: 100vw; height: auto;">
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="Q-papers" class="step" data-x="1500" data-y="750" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height: 100vh; background-color: white; display: flex; justify-content: center;">
+            <div style="display: flex; flex-direction: row; align-items: center; font-family: Arial, Helvetica, sans-serif;">
+                <p>Where are the articles?</p>
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="Article-I-Intro" class="step" data-x="1500" data-y="750" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center; align-items: center;">
+            <div style="display: flex; flex-direction: column; align-items: center; font-family: Arial, Helvetica, sans-serif; gap: 2.5rem;">
+                <p>Article I</p>
+                <p style="font-weight: 1000;">3-D Adaptive AUV Sampling for Classification of Water Masses</p>
+                <p style="font-size:40px;">Yaolin Ge, Jo Eidsvik, Tore Mo-Bjørkelund</p>
+                <p style="font-size:40px; "><em>Published to IEEE Journal of Oceanic Engineering</em></p>
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="Article-I-0" class="step" data-x="1500" data-y="750" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center; align-items: center;">
+            <div style="display: flex; flex-direction: row; align-items: center; font-family: Arial, Helvetica, sans-serif; gap: 2.5rem; margin-left: 5rem; margin-right: 5rem;">
+                <img src="assets/images/articles/I/field.jpg" style="width: 45vw; height: auto;">
+                <img src="assets/images/articles/I/pathplanning.jpg" style="width: 45vw; height: auto;">
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="Article-I-sim-truth" class="step" data-x="1500" data-y="750" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center; align-items: center;">
+            <div style="display: flex; flex-direction: row; align-items: center; font-family: Arial, Helvetica, sans-serif; gap: 2.5rem; margin-left: 5rem; margin-right: 5rem;">
+                <img src="assets/images/articles/I/truth.jpg" style="width: 100vw; height: auto;">
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="Article-I-lawnmower" class="step" data-x="1500" data-y="750" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center; align-items: center;">
+            <div style="display: flex; flex-direction: row; align-items: center; font-family: Arial, Helvetica, sans-serif; gap: 2.5rem; margin-left: 5rem; margin-right: 5rem;">
+                <img src="assets/images/articles/I/lawnmower.jpg" style="width: 100vw; height: auto;">
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="Article-I-myopic2d" class="step" data-x="1500" data-y="750" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center; align-items: center;">
+            <div style="display: flex; flex-direction: row; align-items: center; font-family: Arial, Helvetica, sans-serif; gap: 2.5rem; margin-left: 5rem; margin-right: 5rem;">
+                <img src="assets/images/articles/I/myopic2d.jpg" style="width: 100vw; height: auto;">
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="Article-I-myopid3d" class="step" data-x="1500" data-y="750" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center; align-items: center;">
+            <div style="display: flex; flex-direction: row; align-items: center; font-family: Arial, Helvetica, sans-serif; gap: 2.5rem; margin-left: 5rem; margin-right: 5rem;">
+                <img src="assets/images/articles/I/myopic3d.jpg" style="width: 100vw; height: auto;">
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <!-- <div id="Article-I-sim-result" class="step" data-x="1500" data-y="750" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center; align-items: center;">
+            <div style="display: flex; flex-direction: row; align-items: center; font-family: Arial, Helvetica, sans-serif; gap: 2.5rem; margin-left: 5rem; margin-right: 5rem;">
+                <img src="assets/images/articles/I/result.jpg" style="width: 50vw; height: auto;">
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div> -->
+
+        <div id="Article-I-experiment-result" class="step" data-x="1500" data-y="750" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center; align-items: center;">
+            <div style="display: flex; flex-direction: row; align-items: center; font-family: Arial, Helvetica, sans-serif; gap: 2.5rem; margin-left: 5rem; margin-right: 5rem;">
+                <img src="assets/images/articles/I/posterior_ep.jpg " style="width: 45vw; height: auto;">
+                <img src="assets/images/articles/I/posterior_mean.jpg" style="width: 45vw; height: auto;">
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="Article-I-satellite-validation" class="step" data-x="1500" data-y="750" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center; align-items: center;">
+            <div style="display: flex; flex-direction: row; align-items: center; font-family: Arial, Helvetica, sans-serif; gap: 2.5rem; margin-left: 5rem; margin-right: 5rem;">
+                <img src="assets/images/articles/I/satellite.jpg" style="width: 70vw; height: auto;">
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="Article-II-Intro" class="step" data-x="1500" data-y="750" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center; align-items: center;">
+            <div style="display: flex; flex-direction: column; align-items: center; font-family: Arial, Helvetica, sans-serif; gap: 2.5rem;">
+                <p>Article II</p>
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <p style="margin: 0 2rem; font-weight: 1000;">RRT*-Enhanced Long-Horizon Path Planning for AUV Adaptive</p>
+                    <p style="margin: 0 2rem; font-weight: 1000;">Sampling using a Cost Valley</p>
+                </div>
+                <p style="font-size:40px;">Yaolin Ge, Jo Eidsvik, André Julius Hovd Olaisen</p>
+                <p style="font-size:40px; "><em>Submitted to The International Journal of Robotic Research</em></p>
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="Article-II" class="step" data-x="1500" data-y="750" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center; align-items: center;">
+            <div style="display: flex; flex-direction: row; align-items: center; font-family: Arial, Helvetica, sans-serif; gap: 2.5rem;">
+                <img src="assets/images/articles/II/Prior_on_map.png" style="width: 45vw; height: auto;">
+                <img src="assets/images/articles/II/OPA.png" style="width: 45vw; height: auto;">
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="Article-II-eibv-ivr" class="step" data-x="1500" data-y="750" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center; align-items: center;">
+            <div style="display: flex; flex-direction: row; align-items: center; font-family: Arial, Helvetica, sans-serif; gap: 2.5rem;">
+                <img src="assets/images/articles/II/eibv.png" style="width: 45vw; height: auto;">
+                <img src="assets/images/articles/II/ivr.png" style="width: 45vw; height: auto;">
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="Article-II-cv" class="step" data-x="1500" data-y="750" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center; align-items: center;">
+            <div style="display: flex; flex-direction: row; align-items: center; font-family: Arial, Helvetica, sans-serif; gap: 2.5rem;">
+                <img src="assets/images/articles/II/cv.png" style="width: 55vw; height: auto;">
+                <!-- <iframe src="assets/images/articles/II/cv.html" height="550px" width="550px" name="costvalley" allow="fullscreen" referrerpolicy="no-referrer" sandbox="allow-same-origin allow-scripts" loading="lazy"></iframe> -->
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="Article-II-rrtcv" class="step" data-x="1500" data-y="750" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center; align-items: center;">
+            <div style="display: flex; flex-direction: row; align-items: center; font-family: Arial, Helvetica, sans-serif; gap: 2.5rem;">
+                <img src="assets/images/articles/II/rrt_cv.png" style="width: 60vw; height: auto;">
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="Article-II-sim-truth" class="step" data-x="1500" data-y="750" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center; align-items: center;">
+            <div style="display: flex; flex-direction: row; align-items: center; font-family: Arial, Helvetica, sans-serif; gap: 2.5rem;">
+                <img src="assets/images/articles/II/simulation/simgroundtruth.png" style="width: 100vw; height: auto;">
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="Article-II-sim-myopic" class="step" data-x="1500" data-y="750" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center; align-items: center;">
+            <div style="display: flex; flex-direction: row; align-items: center; font-family: Arial, Helvetica, sans-serif; gap: 2.5rem;">
+                <video width="100%" controls autoplay muted playsinline style="object-fit: cover;">
+                    <source src="assets/images/articles/II/simulation/myopic.mp4" type="video/mp4">
+                </video>
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="Article-II-sim-rrt" class="step" data-x="1500" data-y="750" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center; align-items: center;">
+            <div style="display: flex; flex-direction: row; align-items: center; font-family: Arial, Helvetica, sans-serif; gap: 2.5rem;">
+                <video width="100%" controls autoplay muted playsinline style="object-fit: cover;">
+                    <source src="assets/images/articles/II/simulation/rrt.mp4" type="video/mp4">
+                </video>
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="Article-II-traffic-density-eibv" class="step" data-x="1500" data-y="750" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center; align-items: center;">
+            <div style="display: flex; flex-direction: row; align-items: center; font-family: Arial, Helvetica, sans-serif; gap: 2.5rem;">
+                <video width="100%" controls autoplay muted playsinline style="object-fit: cover;">
+                    <source src="assets/images/articles/II/simulation/eibv.mp4" type="video/mp4">
+                </video>
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="Article-II-traffic-density-ivr" class="step" data-x="1500" data-y="750" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center; align-items: center;">
+            <div style="display: flex; flex-direction: row; align-items: center; font-family: Arial, Helvetica, sans-serif; gap: 2.5rem;">
+                <video width="100%" controls autoplay muted playsinline style="object-fit: cover;">
+                    <source src="assets/images/articles/II/simulation/ivr.mp4" type="video/mp4">
+                </video>
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+        
+        <div id="Article-II-traffic-density-equal" class="step" data-x="1500" data-y="750" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center; align-items: center;">
+            <div style="display: flex; flex-direction: row; align-items: center; font-family: Arial, Helvetica, sans-serif; gap: 2.5rem;">
+                <video width="100%" controls autoplay muted playsinline style="object-fit: cover;">
+                    <source src="assets/images/articles/II/simulation/equal.mp4" type="video/mp4">
+                </video>
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="Article-II-operational-aspect" class="step" data-x="1500" data-y="750" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center; align-items: center;">
+            <div style="display: flex; flex-direction: row; align-items: center; font-family: Arial, Helvetica, sans-serif; gap: 2.5rem;">
+                <img src="assets/images/articles/II/operational_aspect.png" style="width: 100vw; height: auto;">
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="Article-II-experiment-0" class="step" data-x="1500" data-y="750" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center; align-items: center;">
+            <div style="display: flex; flex-direction: row; align-items: center; font-family: Arial, Helvetica, sans-serif; gap: 2.5rem;">
+                <img src="assets/images/articles/II/Step0.png" style="width: 100vw; height: auto;">
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="Article-II-experiment-1" class="step" data-x="1500" data-y="750" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center; align-items: center;">
+            <div style="display: flex; flex-direction: row; align-items: center; font-family: Arial, Helvetica, sans-serif; gap: 2.5rem;">
+                <img src="assets/images/articles/II/Step20.png" style="width: 100vw; height: auto;">
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="Article-II-experiment-2" class="step" data-x="1500" data-y="750" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center; align-items: center;">
+            <div style="display: flex; flex-direction: row; align-items: center; font-family: Arial, Helvetica, sans-serif; gap: 2.5rem;">
+                <img src="assets/images/articles/II/Step30.png" style="width: 100vw; height: auto;">
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="Article-II-experiment-3" class="step" data-x="1500" data-y="750" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center; align-items: center;">
+            <div style="display: flex; flex-direction: row; align-items: center; font-family: Arial, Helvetica, sans-serif; gap: 2.5rem;">
+                <img src="assets/images/articles/II/Step44.png" style="width: 100vw; height: auto;">
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="Article-II-phone-footage" class="step" data-x="1500" data-y="750" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center; align-items: center;">
+            <div style="display: flex; flex-direction: row; align-items: center; font-family: Arial, Helvetica, sans-serif; gap: 2.5rem;">
+                <img src="assets/images/articles/II/plume.png" style="width: 100vw; height: auto;">
+            </div>
+            <p style="position: absolute; top: 2.5rem; left: 2.5rem; width: 50vw; height: auto; color: white; font-family: Arial, Helvetica, sans-serif;">Credit: Tore Mo-Bjørkelund</p>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="Article-III-Intro" class="step" data-x="1500" data-y="750" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center; align-items: center;">
+            <div style="display: flex; flex-direction: column; align-items: center; font-family: Arial, Helvetica, sans-serif; gap: 2.5rem;">
+                <p>Article III</p>
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <p style="margin: 0 2rem; font-weight: 1000; ">Efficient 3D real-time adaptive AUV sampling of a river plume</p>
+                    <p style="margin: 0 2rem; font-weight: 1000; ">front</p>
+                </div>
+                <p style="font-size:40px;">Martin Outzen Berild, Yaolin Ge, Jo Eidsvik, Geir-Arne Fuglstad, and Ingrid Ellingsen</p>
+                <p style="font-size:40px; "><em>Published to the Frontiers in Marine Science</em></p>
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="Article-III-opa" class="step" data-x="1500" data-y="750" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center; align-items: center;">
+            <div style="display: flex; flex-direction: column; align-items: center; font-family: Arial, Helvetica, sans-serif; gap: 2.5rem;">
+                <img src="assets/images/articles/III/opa.png" style="width: 80vw; height: auto;">
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="Article-III-sim" class="step" data-x="1500" data-y="750" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height: 100vh; background-color: white; display: grid; grid-template-rows: repeat(2, 1fr);">
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); font-family: Arial, Helvetica, sans-serif;">
+                <video width="100%" controls autoplay muted playsinline style="object-fit: cover;">
+                    <source src="assets/images/articles/III/grf_mu.mp4" type="video/mp4">
+                </video>
+                <video width="100%" controls autoplay muted playsinline style="object-fit: cover;">
+                    <source src="assets/images/articles/III/gmrf_mu.mp4" type="video/mp4">
+                </video>
+                <video width="100%" controls autoplay muted playsinline style="object-fit: cover;">
+                    <source src="assets/images/articles/III/grf_mvar.mp4" type="video/mp4">
+                </video>
+                <video width="100%" controls autoplay muted playsinline style="object-fit: cover;">
+                    <source src="assets/images/articles/III/gmrf_mvar.mp4" type="video/mp4">
+                </video>
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="Article-III-sim-result" class="step" data-x="1500" data-y="750" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center; align-items: center;">
+            <div style="display: flex; flex-direction: column; align-items: center; font-family: Arial, Helvetica, sans-serif; gap: 2.5rem;">
+                <img src="assets/images/articles/III/sim_result_updated.png" style="width: 120vw; height: auto;">
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="Article-III-experiment-result-zigzag" class="step" data-x="1500" data-y="750" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center; align-items: center;">
+            <div style="display: flex; flex-direction: column; align-items: center; font-family: Arial, Helvetica, sans-serif; gap: 2.5rem;">
+                <img src="assets/images/articles/III/zigzag.png" style="width: 100vw; height: auto;">
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="Article-III-experiment-result-adaptive" class="step" data-x="1500" data-y="750" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center; align-items: center;">
+            <div style="display: flex; flex-direction: column; align-items: center; font-family: Arial, Helvetica, sans-serif; gap: 2.5rem;">
+                <img src="assets/images/articles/III/adaptive.png" style="width: 101vw; height: auto;">
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="Article-IV-Intro" class="step" data-x="1500" data-y="750" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center; align-items: center;">
+            <div style="display: flex; flex-direction: column; align-items: center; font-family: Arial, Helvetica, sans-serif; gap: 2.5rem;">
+                <p>Article IV</p>
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <p style="margin: 0 2rem; font-weight: 1000; ">Using expected improvement of gradients for robotic</p>
+                    <p style="margin: 0 2rem; font-weight: 1000; ">exploration of ocean salinity fronts</p>
+                </div>
+                <p style="font-size:40px;">André Julius Hovd Olaisen, Yaolin Ge and Jo Eidsvik</p>
+                <p style="font-size:40px; "><em>Submitted to Environmetrics</em></p>
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="Article-IV" class="step" data-x="1500" data-y="750" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center; align-items: center;">
+            <div style="display: flex; flex-direction: row; align-items: center; font-family: Arial, Helvetica, sans-serif; gap: 2.5rem;">
+                <img src="assets/images/articles/IV/mission.png" style="width: 30vw; height: auto;">
+                <img src="assets/images/articles/IV/salinity.png" style="width: 30vw; height: auto;">
+                <img src="assets/images/articles/IV/gradient.png" style="width: 30vw; height: auto;">
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="Article-V-Intro" class="step" data-x="1500" data-y="750" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center; align-items: center;">
+            <div style="display: flex; flex-direction: column; align-items: center; font-family: Arial, Helvetica, sans-serif; gap: 2.5rem;">
+                <p>Article V</p>
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <p style="margin: 0 2rem; font-weight: 1000; ">Long-Horizon Informative Path Planning with Obstacles and</p>
+                    <p style="margin: 0 2rem; font-weight: 1000; ">Time Constraints</p>
+                </div>
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <p style="margin: 0 2rem; font-size:40px;">Yaolin Ge, André Julius Hovd Olaisen, Jo Eidsvik,</p>
+                    <p style="margin: 0 2rem; font-size:40px;">R. Praveen Jain, Tor Arne Johansen</p>
+                </div>
+                <p style="font-size:40px; "><em>Published to IFAC-PapersOnLine</em></p>
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="Article-V-truth" class="step" data-x="1500" data-y="750" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center; align-items: center;">
+            <div style="display: flex; flex-direction: row; align-items: center; font-family: Arial, Helvetica, sans-serif; gap: 2.5rem;">
+                <img src="assets/images/articles/V/truth.png" style="width: 45vw; height: auto;">
+                <img src="assets/images/articles/V/prior.png" style="width: 45vw; height: auto;">
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="Article-V-eibv-ivr" class="step" data-x="1500" data-y="750" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center; align-items: center;">
+            <div style="display: flex; flex-direction: row; align-items: center; font-family: Arial, Helvetica, sans-serif; gap: 2.5rem;">
+                <img src="assets/images/articles/V/ivr.png" style="width: 45vw; height: auto;">
+                <img src="assets/images/articles/V/eibv.png" style="width: 45vw; height: auto;">
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="Article-V-cv" class="step" data-x="1500" data-y="750" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center; align-items: center;">
+            <div style="display: flex; flex-direction: row; align-items: center; font-family: Arial, Helvetica, sans-serif; gap: 2.5rem;">
+                <img src="assets/images/articles/V/cv.png" style="width: 55vw; height: auto;">
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="Article-V-rrt-comparison" class="step" data-x="1500" data-y="750" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center; align-items: center;">
+            <div style="width: 50vw; display: flex; flex-direction: row; justify-content: center; align-items: center; font-family: Arial, Helvetica, sans-serif; gap: 2.5rem;">
+                <video width="100%" controls autoplay muted playsinline style="object-fit: cover;">
+                    <source src="assets/images/articles/V/rrt_path.mp4" type="video/mp4">
+                </video>
+                <video width="100%" controls autoplay muted playsinline style="object-fit: cover;">
+                    <source src="assets/images/articles/V/rrtstar_fast.mp4" type="video/mp4">
+                </video>
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="Article-V-cost-effect-1" class="step" data-x="1500" data-y="750" data-z="-1000" data-rotate="360" data-scale="1" style="width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center; align-items: center;">
+            <div style="width: 75vw; display: flex; flex-direction: row; justify-content: center; align-items: center; font-family: Arial, Helvetica, sans-serif; gap: 2.5rem;">
+                <img src="assets/images/articles/V/rrtcv_small.png" style="width: 100%; height: auto;">
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="Article-V-cost-effect-2" class="step" data-x="1500" data-y="750" data-z="-1000" data-rotate="360" data-scale="1" style="width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center; align-items: center;">
+            <div style="width: 75vw; display: flex; flex-direction: row; justify-content: center; align-items: center; font-family: Arial, Helvetica, sans-serif; gap: 2.5rem;">
+                <img src="assets/images/articles/V/rrtcv_highpenalty.png" style="width: 100%; height: auto;">
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="Article-V-cost-effect-3" class="step" data-x="1500" data-y="750" data-z="-1000" data-rotate="360" data-scale="1" style="width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center; align-items: center;">
+            <div style="width: 75vw; display: flex; flex-direction: row; justify-content: center; align-items: center; font-family: Arial, Helvetica, sans-serif; gap: 2.5rem;">
+                <img src="assets/images/articles/V/rrtcv_extreme.png" style="width: 100%; height: auto;">
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="Article-V-simulation" class="step" data-x="1500" data-y="750" data-z="-1000" data-rotate="360" data-scale="1" style="width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center; align-items: center;">
+            <div style="width: 100vw; display: flex; flex-direction: row; justify-content: center; align-items: center; font-family: Arial, Helvetica, sans-serif; gap: 2.5rem;">
+                <video width="100%" controls autoplay muted playsinline style="object-fit: cover;">
+                    <source src="assets/images/articles/V/rrtcv.mp4" type="video/mp4">
+                </video>
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="Q-review" class="step" data-x="1500" data-y="750" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height: 100vh; background-color: white; display: flex; justify-content: center;">
+            <div style="display: flex; flex-direction: row; align-items: center; font-family: Arial, Helvetica, sans-serif;">
+                <p>Summary</p>
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <div id="Overview-satellite" class="step" data-x="1500" data-y="750" data-z="-1000" data-rotate="360" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center; align-items: center;">
+            <div style="display: flex; flex-direction: row; align-items: center; font-family: Arial, Helvetica, sans-serif; gap: 2.5rem;">
+                <img src="assets/images/trondheim.png" style="width:100vw; height: auto;">
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+        
+        <div id="Overview-lauv" class="step" data-x="1500" data-y="0" data-z="-1000" data-rotate="270" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center; align-items: center;">
+            <div style="display: flex; flex-direction: row; align-items: center; font-family: Arial, Helvetica, sans-serif; gap: 2.5rem;">
+                <video width="100%" controls autoplay muted playsinline style="object-fit: cover;">
+                    <source src="assets/videos/AUV.mp4" type="video/mp4">
+                </video>
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+        <!-- <div id="Overview-ASS" class="step" data-x="0" data-y="0" data-z="0" data-rotate="180" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center; align-items: center;">
+            <p style="font-family: Arial, Helvetica, sans-serif; font-size: 60px; color:rgb(119, 119, 119); margin-top: 5rem;">ASS Anatomy</p> 
+            <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 3rem; font-family: Arial, sans-serif; font-size: 60px;">
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 2rem;">
+                    <p style="font-weight: bold; font-size: 40px; color: rgb(119, 119, 119);">Sense</p>
+                    <div style="border-radius: 50%; width: 20vw; height: 20vw; overflow: hidden">
+                        <img src="assets/images/sensePlanAct/sense.webp" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 2rem;">
+                    <p style="font-weight: bold; font-size: 40px; color: rgb(119, 119, 119);">Plan</p>
+                    <div style="border-radius: 50%; width: 20vw; height: 20vw; overflow: hidden">
+                        <img src="assets/images/sensePlanAct/plan.webp" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 2rem;">
+                    <p style="font-weight: bold; font-size: 40px; color: rgb(119, 119, 119);">Act</p>
+                    <div style="border-radius: 50%; width: 20vw; height: 20vw; overflow: hidden">
+                        <img src="assets/images/sensePlanAct/act.webp" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                </div>
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;"> 
+        </div> -->
+
+        <div id="Overview-ASS" class="step" data-x="0" data-y="0" data-z="0" data-rotate="180" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; flex-direction: column; justify-content: start; align-items: center; gap: 8rem; ">
+            <p style="font-family: Arial, Helvetica, sans-serif; font-size: 60px; color:rgb(119, 119, 119); margin-top: 5rem;">ASS (Adaptive Sampling System)</p> 
+            <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 3rem; font-family: Arial, sans-serif; font-size: 60px;">
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 2rem;">
+                    <p style="font-weight: bold; font-size: 40px; color: rgb(119, 119, 119);">Sense</p>
+                    <div style="border-radius: 50%; width: 20vw; height: 20vw; overflow: hidden">
+                        <img src="assets/images/sensePlanAct/sense.webp" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 2rem;">
+                    <p style="font-weight: bold; font-size: 40px; color: rgb(119, 119, 119);">Plan</p>
+                    <div style="border-radius: 50%; width: 20vw; height: 20vw; overflow: hidden">
+                        <img src="assets/images/sensePlanAct/plan.webp" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 2rem;">
+                    <p style="font-weight: bold; font-size: 40px; color: rgb(119, 119, 119);">Act</p>
+                    <div style="border-radius: 50%; width: 20vw; height: 20vw; overflow: hidden">
+                        <img src="assets/images/sensePlanAct/act.webp" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                </div>
+            </div>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;"> 
+        </div>
+
+        <div id="Overview-fieldtrip" class="step" data-x="0" data-y="0" data-z="0" data-rotate="180" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: flex; justify-content: center; align-items: center;">
+            <div style="display: flex; flex-direction: row; align-items: center; font-family: Arial, Helvetica, sans-serif;">
+                <video width="120%" controls autoplay muted playsinline style="object-fit: cover;">
+                    <source src="assets/videos/lifeatsea.mov" type="video/mp4">
+                </video>
+            </div>
+        </div>  
+
+        <div id="FinalReview" class="step" data-x="0" data-y="0" data-z="0" data-rotate="0" data-scale="1" style="padding: 0; width: 100vw; height:100vh; background-color: white; display: grid; grid-template-rows: repeat(2, 1fr); grid-template-columns: 58% 1fr;">
+            <div>
+                <img src="assets/images/trondheim.png" style="width: 100%; height: auto; object-fit: cover;">
+            </div>
+            <div style="display: flex; justify-content: center; align-items: center; overflow: hidden;">
+                <video width="100%" controls autoplay muted playsinline style="object-fit: cover;">
+                    <source src="assets/videos/AUV.mp4" type="video/mp4">
+                </video>
+            </div>
+            <div>
+                <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 3rem; font-family: Arial, sans-serif; font-size: 60px;">
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 2rem;">
+                        <div style="border-radius: 50%; width: 15vw; height: 15vw; overflow: hidden;">
+                            <img src="assets/images/sensePlanAct/sense.webp" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                    </div>
+        
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 2rem;">
+                        <div style="border-radius: 50%; width: 15vw; height: 15vw; overflow: hidden;">
+                            <img src="assets/images/sensePlanAct/plan.webp" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                    </div>
+        
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 2rem;">
+                        <div style="border-radius: 50%; width: 15vw; height: 15vw; overflow: hidden;">
+                            <img src="assets/images/sensePlanAct/act.webp" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <video width="100%" controls autoplay muted playsinline style="object-fit: cover;">
+                    <source src="assets/videos/deployment.MOV" type="video/mp4">
+                </video>
+            </div>
+            <p style="font-family: Arial, Helvetica, sans-serif; font-size: 60px; color:rgb(119, 119, 119); position: absolute; left: 40rem; top: 30rem; z-index: 1;">Questions?</p>
+            <img src="assets/images/footlogo.png" style="position: absolute; bottom: 2.5rem; left: 2.5rem; width: 30vw; height: auto;">
+        </div>
+
+    </div>
+
+
+
+
+
+    <div id="impress-toolbar"></div>
+    <div class="hint">
+        <p>Use a spacebar or arrow keys to navigate. <br />
+            Press 'P' to launch speaker console.</p>
+    </div>
+    <script>
+        if ("ontouchstart" in document.documentElement) {
+            document.querySelector(".hint").innerHTML = "<p>Swipe left or right to navigate</p>";
+        }
+    </script>
+
+    <script src="js/impress.js"></script>
+    <script src="js/user_defined.js"></script>
+    <script src="js/mathjax_prefix.js"></script>
+    <script id="MathJax-script" async src="js/mathjax.js"></script>
+    <script>impress().init();</script>
+</body>
+
+</html>
