@@ -45,6 +45,7 @@ __pycache__/
 **/*.html
 **/**.html
 !phd.html
+!index.html
 
 **.jpg
 *.jpg
