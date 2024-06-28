@@ -5,6 +5,8 @@ import streamlit as st
 from Components.Sense import renderSensePage
 from Components.Plan import renderPlanPage
 from Components.Act import renderActPage
+import os
+import requests
 
 st.set_page_config(
     page_title="Demo GRF",
@@ -21,6 +23,13 @@ st.set_page_config(
 page_options = ['🧪 Sense', '🎲 Plan', '🤖 Act']
 
 selected_page = st.sidebar.selectbox('Adaptive Sampling System', page_options)
+
+# Download the data
+url = "https://drive.google.com/file/d/1mIGUevAlptjYIOdOjpSiVss2VyW-1qsS/view?usp=sharing"
+if not os.path.exists("interpolator_medium.joblib"):
+    response = requests.get(url)
+    with open("interpolator_medium.joblib", "wb") as file:
+        file.write(response.content)
 
 if selected_page == '🧪 Sense':
     renderSensePage()
