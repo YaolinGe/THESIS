@@ -80,3 +80,8 @@ __pycache__/
 **/*.gif
 /assets/videos/
 **/assets/videos/
+
+/tests/
+/notes/
+/backup/
+/prior/

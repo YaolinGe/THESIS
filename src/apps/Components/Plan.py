@@ -293,11 +293,11 @@ def renderPlanPage():
             if not isNonMyopicPathPlanning:
                 st.markdown("### Myopic Path Planning")
                 st.markdown("This is an illustration of myopic path planning.")
-                st.image("figs/myopic.png")
+                st.image("src/apps/figs/myopic.png")
             else:
                 st.markdown("### Non-Myopic Path Planning")
                 st.markdown("This is an illustration of non-myopic path planning.")
-                st.image("figs/nonmyopic.png")
+                st.image("src/apps/figs/nonmyopic.png")
         else:
             st.title(f"{path_planning_algorithm} Simulation")
 
