@@ -31,12 +31,12 @@ if not os.path.exists("interpolator_medium.joblib"):
     with open("interpolator_medium.joblib", "wb") as file:
         file.write(response.content)
 
-if selected_page == '🧪 Sense':
-    renderSensePage()
-elif selected_page == '🎲 Plan':
-    renderPlanPage()
-elif selected_page == '🤖 Act':
-    renderActPage()
+        if selected_page == '🧪 Sense':
+            renderSensePage()
+        elif selected_page == '🎲 Plan':
+            renderPlanPage()
+        elif selected_page == '🤖 Act':
+            renderActPage()
 
 
 
